@@ -3,31 +3,24 @@ let speed = 0;
 let x = 100;
 let y = 100;
 let dir = [Math.cos(ang), Math.sin(ang)];
+let maxSpeed = 3
 
 function handleMovementInput(){
   if (keyIsDown(87)){
     speed += 0.1;
+    speedCheck(true)
   }
   if (keyIsDown(65)){
     ang -= 0.01*Math.PI;
-    if (speed >= 0.01){
-      speed -= 0.01;
-    }
-    else if(speed <= -0.01){
-      speed += 0.01
-    }
+    speedCheck(false)
   }
   if (keyIsDown(83)){
     speed -= 0.1;
+    speedCheck(true)
   }
   if (keyIsDown(68)){
     ang += 0.01*Math.PI;
-    if (speed >= 0.01){
-      speed -= 0.01;
-    }
-    else if(speed <= -0.01){
-      speed += 0.01
-    }
+    speedCheck(false)
   }
 }
 
@@ -38,6 +31,25 @@ function handleMovement(){
   let dy = dir[1]*speed
   x += dx
   y += dy
+}
+
+function speedCheck(wOrS){
+  if (speed > maxSpeed){
+    speed = maxSpeed
+  }
+  else if (speed < -maxSpeed){
+    speed = maxSpeed
+  }
+
+  if (!wOrS){
+    if (speed >= 0.01){
+      speed -= 0.01;
+    }
+    else if(speed <= -0.01){
+      speed += 0.01
+    }
+  }
+
 }
 
 function setup() {
@@ -58,18 +70,10 @@ function draw() {
   
 
   if (keyIsPressed == true){
-    if (speed < 2 && speed > -2){
-      handleMovementInput()
-    }
+    handleMovementInput()
   }
   else{
-    if (speed >= 0.01){
-      speed -= 0.01;
-    }
-    else if(speed <= -0.01){
-      speed += 0.01
-    }
+    speedCheck(false)
   }
-
 
 }
