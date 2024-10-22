@@ -1,13 +1,14 @@
 let state = 1
-let ang = 0;
-let speed = 0;
-let playerX = 100;
-let playerY = 100;
-let dir = [Math.cos(ang), Math.sin(ang)];
+let ang = 0
+let angSpeed = 0.01*Math.PI
+let speed = 0
+let playerX = 100
+let playerY = 100
+let dir = [Math.cos(ang), Math.sin(ang)]
 let maxSpeed = 3
 let accel = 0
 let maxAccel = 1
-let dAcc = 0.05
+let dAcc = 0.01
 let friction = 0.03
 
 let obstructions = []
@@ -15,19 +16,19 @@ let npcCars = []
 
 function handleMovementInput(){
   if (keyIsDown(87)){
-    accel += 0.01;
+    accel += dAcc
     speedCheck(true)
   }
   if (keyIsDown(65)){
-    ang -= 0.01*Math.PI;
+    ang -= angSpeed
     speedCheck(false)
   }
   if (keyIsDown(83)){
-    accel -= 0.01;
+    accel -= dAcc
     speedCheck(true)
   }
   if (keyIsDown(68)){
-    ang += 0.01*Math.PI;
+    ang += angSpeed
     speedCheck(false)
   }
 }
@@ -72,7 +73,7 @@ function speedCheck(wOrS){
 }
 
 function gameDraw(){
-  background(220);
+  background(220)
   handleMovement()
   drawPlayer()
   
@@ -85,16 +86,16 @@ function gameDraw(){
 }
 
 function drawPlayer(){
-  translate(playerX, playerY);
-  rotate(ang);
-  rect(0, 0, 50, 50);
+  translate(playerX, playerY)
+  rotate(ang)
+  rect(0, 0, 50, 50)
 }
 
 function setup() {
-  createCanvas(1000, 1000);
+  createCanvas(1000, 1000)
   angleMode(RADIANS)
-  background(220);
-  rectMode(CENTER);
+  background(220)
+  rectMode(CENTER)
 }
 
 function draw() {
