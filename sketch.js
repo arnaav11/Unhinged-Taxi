@@ -5,11 +5,13 @@ let playerX = 100;
 let playerY = 100;
 let dir = [Math.cos(ang), Math.sin(ang)];
 let maxSpeed = 3
-let rotSpeed = 0
 let accel = 0
 let maxAccel = 1
 let dAcc = 0.05
 let friction = 0.03
+
+let obstructions = []
+let npcCars = []
 
 function handleMovementInput(){
   if (keyIsDown(87)){
@@ -82,17 +84,17 @@ function gameDraw(){
   }
 }
 
+function drawPlayer(){
+  translate(playerX, playerY);
+  rotate(ang);
+  rect(0, 0, 50, 50);
+}
+
 function setup() {
   createCanvas(1000, 1000);
   angleMode(RADIANS)
   background(220);
   rectMode(CENTER);
-}
-
-function drawPlayer(){
-  translate(playerX, playerY);
-  rotate(ang);
-  rect(0, 0, 50, 50);
 }
 
 function draw() {
