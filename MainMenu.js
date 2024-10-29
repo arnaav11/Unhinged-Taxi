@@ -3,76 +3,83 @@ let startButton;
 let optionsButton;
 let exitButton;
 let backButton;
-let soundToggle;
-let displayTimerToggle;
 
 function preload() {
-    backgroundImage = loadImage('assets/background.png');
-    startButton = loadImage('assets/start_game.png');
-    optionsButton = loadImage('assets/options.png');
-    exitButton = loadImage('assets/exit.png');
-    backButton = loadImage('assets/back_png.png');
+    backgroundImage = createImg('assets/background.png');
+    startButton = createImg('assets/start_game.png');
+    optionsButton = createImg('assets/options.png');
+    exitButton = createImg('assets/exit.png');
+    backButton = createImg('assets/back png.png');
 }
 
 function setup() {
-    createCanvas(windowWidth, windowHeight);
+    createCanvas(1300, 600);
     
-    backgroundImage.resize(windowWidth, windowHeight);
+    backgroundImage.position(0, 0);
+    backgroundImage.size(1450, 750);
 
-    // Position your buttons and assign functions
-    startButton.position(50, 200);
-    startButton.mousePressed(startGame);
+    startButton.position(100, 250);
+    startButton.size(180, 80);
+    startButton.mousePressed(startGame); 
 
-    optionsButton.position(50, 250);
-    optionsButton.mousePressed(showOptions);
+    optionsButton.position(100, 350);
+    optionsButton.size(180, 80);
+    optionsButton.mousePressed(showOptions); 
 
-    exitButton.position(50, 300);
-    exitButton.mousePressed(exitGame);
-
-    backButton.position(50, 350);  // Adjust position as needed
-    backButton.mousePressed(goBack);
+    exitButton.position(100, 450);
+    exitButton.size(180, 80);
+    exitButton.mousePressed(exitGame); 
 }
 
 function draw() {
-    background(backgroundImage);
+    background(220);
 }
 
 function startGame() {
     console.log('Start Game button clicked');
+    
 }
 
 function showOptions() {
-    clear();  // Clear the canvas
-    background(backgroundImage);
-    
-    // Display Options text and buttons
-    text("Sound fx:", 100, 100);
-    soundToggle = createButton('Toggle Sound');
-    soundToggle.position(100, 120);
-    soundToggle.mousePressed(toggleSound);
-
-    text("Display Timer:", 100, 150);
-    displayTimerToggle = createButton('Toggle Timer');
-    displayTimerToggle.position(100, 170);
-    displayTimerToggle.mousePressed(toggleTimer);
-
-    // Display back button
+    // Hide the main menu buttons
+    startButton.hide();
+    exitButton.hide();
+    optionsButton.position(600, 80);
+    // Show the back button
+    backButton.position(1200, 620);
+    backButton.size(180, 80);
+    backButton.mousePressed(hideOptions);
     backButton.show();
+
+    // Add a semi-transparent overlay
+    fill('rgba(0, 0, 0, 0.5)');
+    rect(50, 50, 300, 300);  // Adjust size and position as needed
+
+    // Display options text
+    fill(255); // White color for text
+    textSize(24);
+    text("Options Menu", 150, 100); // Display the Options menu title
+
+    textSize(18);
+    text("Sound: ON", 150, 150);
+    text("Display Timer: ON", 150, 200);
 }
+
+function hideOptions() {
+    // Hide the options menu elements
+    backButton.hide();
+
+    // Show the main menu buttons again
+    startButton.show();
+    optionsButton.position(100, 350);
+    exitButton.show();
+
+    // Clear any additional text or options-specific UI elements if they were added directly
+    background(backgroundImage); // This will clear the canvas and redraw the background
+}
+
 
 function exitGame() {
     console.log('Exit button clicked');
-}
-
-function toggleSound() {
-    console.log('Toggle sound');
-}
-
-function toggleTimer() {
-    console.log('Toggle timer');
-}
-
-function goBack() {
-    // Code to return to main menu
-    console.log('Back to main menu');
+    
 }
