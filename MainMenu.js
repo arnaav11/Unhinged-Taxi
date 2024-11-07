@@ -5,6 +5,7 @@ let exitButton;
 let backButton;
 let nameButton;
 
+
 function preload() {
     backgroundImage = createImg('assets/background.png');
     startButton = createImg('assets/start_game.png');
@@ -12,6 +13,7 @@ function preload() {
     exitButton = createImg('assets/exit.png');
     backButton = createImg('assets/back png.png');
     nameButton = createImg('assets/Game_Name.png');
+    optionScreen= createImg('assets/pngegg.png');
 }
 
 function setup() {
@@ -33,12 +35,18 @@ function setup() {
     exitButton.mousePressed(exitGame); 
 
     nameButton.position(520, 75);
-    nameButton.size(400, 180);
+    
+    optionScreen.position(300,80);
+    optionScreen.size(800,650);
+    optionScreen.hide();
 }
 
 function draw() {
     background(220);
-}
+    if(showOptions){
+        OptionsMenu();
+    }
+    }
 
 function startGame() {
     console.log('Start Game button clicked');
@@ -46,35 +54,45 @@ function startGame() {
 }
 
 function showOptions() {
+    
     // Hide the main menu buttons
     nameButton.hide();
     startButton.hide();
     exitButton.hide();
     optionsButton.position(600, 80);
+    optionScreen.show();
     // Show the back button
     backButton.position(1200, 650);
     backButton.size(180, 80);
     backButton.mousePressed(hideOptions);
     backButton.show();
 
-    // Add a semi-transparent overlay
-    fill('rgba(0, 0, 0, 0.5)');
-    rect(50, 50, 300, 300);  // Adjust size and position as needed
+    /*fill(255); // 白色文字
+    textSize(32);
+    textAlign(CENTER, CENTER);
+    text("Options Menu", width / 2, 120);
 
-    // Display options text
-    fill(255); // White color for text
     textSize(24);
-    text("Options Menu", 150, 100); // Display the Options menu title
+    text("Sound FX: ON/OFF", width / 2, 200);
+    text("Display Timer: ON/OFF", width / 2, 260);*/
+}
 
-    textSize(18);
-    text("Sound: ON", 150, 150);
-    text("Display Timer: ON", 150, 200);
+function OptionsMenu() {
+    fill(255); 
+    textSize(32);
+    textAlign(CENTER, CENTER);
+    text("Options Menu", width / 2, 120);
+
+    textSize(24);
+    text("Sound FX: ON/OFF", width / 2, 200);
+    text("Display Timer: ON/OFF", width / 2, 260);
 }
 
 function hideOptions() {
+    optionsVisible = false;
     // Hide the options menu elements
     backButton.hide();
-
+    optionScreen.hide();
     // Show the main menu buttons again
     startButton.show();
     nameButton.show();
@@ -88,6 +106,8 @@ function hideOptions() {
 
 
 function exitGame() {
-    console.log('Exit button clicked');
+    if(confirm("Are you sure to exit the game?")){
+        window.close();
+    }
     
 }
