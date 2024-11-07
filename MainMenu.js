@@ -34,7 +34,7 @@ function setup() {
     exitButton.size(180, 80);
     exitButton.mousePressed(exitGame); 
 
-    nameButton.position(520, 75);
+    nameButton.position(450, 75);
     
     optionScreen.position(300,80);
     optionScreen.size(800,650);
@@ -97,7 +97,7 @@ function hideOptions() {
     startButton.show();
     nameButton.show();
     optionsButton.position(100, 400);
-    nameButton.position(520, 75);
+    nameButton.position(450, 75);
     exitButton.show();
 
     // Clear any additional text or options-specific UI elements if they were added directly
