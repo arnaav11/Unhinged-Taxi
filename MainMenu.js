@@ -4,6 +4,8 @@ let optionsButton;
 let exitButton;
 let backButton;
 let nameButton;
+let nicknameInput;
+
 
 
 function preload() {
@@ -49,8 +51,29 @@ function draw() {
     }
 
 function startGame() {
-    console.log('Start Game button clicked');
-    
+      // Hide all main menu buttons
+    nameButton.hide();
+    startButton.hide();
+    optionsButton.hide();
+    exitButton.hide();
+
+    // Show back button to return to main menu
+    backButton.position(1200, 600);
+    backButton.size(180, 80);
+    backButton.mousePressed(hideNicknameInput); // Set action for back button
+    backButton.show();
+
+    // Create input field for nickname
+    nicknameInput = createInput();
+    nicknameInput.position(windowWidth / 2 - 100, windowHeight / 2 - 40);
+    nicknameInput.size(200);
+
+    // Change startButton to "Submit" for submitting nickname
+    startButton.html('Submit');
+    startButton.position(windowWidth / 2 - 45, windowHeight / 2 + 20);
+    startButton.size(100, 40);
+    startButton.show();
+    startButton.mousePressed(submitNickname); // Set action for submitting nickname
 }
 
 function showOptions() {
@@ -62,12 +85,12 @@ function showOptions() {
     optionsButton.position(600, 80);
     optionScreen.show();
     // Show the back button
-    backButton.position(1200, 650);
+    backButton.position(1200, 600);
     backButton.size(180, 80);
     backButton.mousePressed(hideOptions);
     backButton.show();
 
-    /*fill(255); // 白色文字
+    /*fill(255); 
     textSize(32);
     textAlign(CENTER, CENTER);
     text("Options Menu", width / 2, 120);
@@ -87,6 +110,38 @@ function OptionsMenu() {
     text("Sound FX: ON/OFF", width / 2, 200);
     text("Display Timer: ON/OFF", width / 2, 260);
 }
+
+function submitNickname() {
+    // Get nickname from input field
+    let nickname = nicknameInput.value();
+    console.log("Nickname:", nickname);
+
+    // Hide input field and submit button after submission
+    nicknameInput.hide();
+    startButton.hide();
+
+    // Additional game initialization logic can be added here
+}
+
+
+function hideNicknameInput() {
+    // Hide nickname input field and submit button
+    if (nicknameInput) {
+        nicknameInput.hide();
+    }
+    startButton.html('Start Game'); // Reset startButton text to "Start Game"
+    startButton.position(100, 300); // Set position back to main menu location
+    startButton.size(180, 80);
+    startButton.mousePressed(startGame); // Reset action to start game
+    startButton.show();
+
+    // Show all main menu buttons again
+    nameButton.show();
+    optionsButton.show();
+    exitButton.show();
+    backButton.hide(); // Hide back button after returning to main menu
+}
+
 
 function hideOptions() {
     optionsVisible = false;
