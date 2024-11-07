@@ -38,8 +38,8 @@ function setup() {
 
     nameButton.position(450, 75);
     
-    optionScreen.position(300,80);
-    optionScreen.size(800,650);
+    optionScreen.position(-120,-50);
+    optionScreen.size(1600,800);
     optionScreen.hide();
 }
 
@@ -144,7 +144,6 @@ function hideNicknameInput() {
 
 
 function hideOptions() {
-    optionsVisible = false;
     // Hide the options menu elements
     backButton.hide();
     optionScreen.hide();
@@ -161,7 +160,7 @@ function hideOptions() {
 
 
 function exitGame() {
-    if(confirm("Are you sure to exit the game?")){
+    if(confirm("Are you sure you want to exit the game?")){
         window.close();
     }
     
