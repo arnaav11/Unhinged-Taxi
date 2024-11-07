@@ -15,10 +15,10 @@ function preload() {
 }
 
 function setup() {
-    createCanvas(1300, 600);
+    createCanvas(windowWidth, windowWidth);
     
     backgroundImage.position(0, 0);
-    backgroundImage.size(1450, 750);
+    backgroundImage.size(windowWidth, windowWidth);
 
     startButton.position(100, 300);
     startButton.size(180, 80);
