@@ -4,10 +4,10 @@ let optionsButton;
 let exitButton;
 let backButton;
 let nameButton;
-let nicknameInput;
+let optionScreen;
+let gameIframe;
 
-
-
+// Preload assets
 function preload() {
     backgroundImage = createImg('assets/background.png');
     startButton = createImg('assets/start_game.png');
@@ -15,93 +15,71 @@ function preload() {
     exitButton = createImg('assets/exit.png');
     backButton = createImg('assets/back png.png');
     nameButton = createImg('assets/Game_Name.png');
-    optionScreen= createImg('assets/pngegg.png');
+    optionScreen = createImg('assets/pngegg.png');
 }
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
     
+    // Set up background
     backgroundImage.position(0, 0);
     backgroundImage.size(windowWidth, windowHeight);
+    const centerX = windowWidth / 3;
+    // Position title and main menu buttons
+    nameButton.position(centerX, 75);
+    startButton.position(100, 300).size(180, 80).mousePressed(startGame);
+    optionsButton.position(100, 400).size(180, 80).mousePressed(showOptions);
+    exitButton.position(100, 500).size(180, 80).mousePressed(exitGame);
 
-    startButton.position(100, 300);
-    startButton.size(180, 80);
-    startButton.mousePressed(startGame); 
-
-    optionsButton.position(100, 400);
-    optionsButton.size(180, 80);
-    optionsButton.mousePressed(showOptions); 
-
-    exitButton.position(100, 500);
-    exitButton.size(180, 80);
-    exitButton.mousePressed(exitGame); 
-
-    nameButton.position(450, 75);
-    
-    optionScreen.position(-120,-50);
-    optionScreen.size(1600,800);
-    optionScreen.hide();
+    // Hide option screen and back button initially
+    optionScreen.position(300, 100).size(1600, 800).hide();
+    backButton.size(180, 80).hide();
 }
 
 function draw() {
     background(220);
-    if(showOptions){
-        OptionsMenu();
-    }
-    }
+}
 
+// Function to handle back button display with custom action
+function showBackButton(returnFunction) {
+    backButton.position(windowWidth / 2 - 90, windowHeight - 100);
+    backButton.mousePressed(returnFunction);
+    backButton.show();
+}
+
+// Function to start the game and display Unity game iframe
 function startGame() {
-      // Hide all main menu buttons
+    // Hide main menu buttons
     nameButton.hide();
     startButton.hide();
     optionsButton.hide();
     exitButton.hide();
 
     // Show back button to return to main menu
-    backButton.position(1200, 600);
-    backButton.size(180, 80);
-    backButton.mousePressed(hideNicknameInput); // Set action for back button
-    backButton.show();
+    showBackButton(returnToMenu);
 
-    // Create input field for nickname
-    nicknameInput = createInput();
-    nicknameInput.position(windowWidth / 2 - 100, windowHeight / 2 - 40);
-    nicknameInput.size(200);
-
-    // Change startButton to "Submit" for submitting nickname
-    startButton.html('Submit');
-    startButton.position(windowWidth / 2 - 45, windowHeight / 2 + 20);
-    startButton.size(100, 40);
-    startButton.show();
-    startButton.mousePressed(submitNickname); // Set action for submitting nickname
+    // Create and display the iframe for Unity game
+    gameIframe = createElement('iframe');
+    gameIframe.position(0, 0);
+    gameIframe.size(windowWidth, windowHeight - 150); // Adjust height to leave space for back button
+    gameIframe.attribute('src', 'unity_game_Levi/index.html');
+    gameIframe.attribute('frameborder', '0');
 }
 
 function showOptions() {
-    
-    // Hide the main menu buttons
+    // Hide main menu buttons
     nameButton.hide();
     startButton.hide();
     exitButton.hide();
-    optionsButton.position(600, 80);
+    
+    // Show option screen and back button
     optionScreen.show();
-    // Show the back button
-    backButton.position(1200, 600);
-    backButton.size(180, 80);
-    backButton.mousePressed(hideOptions);
-    backButton.show();
-
-    /*fill(255); 
-    textSize(32);
-    textAlign(CENTER, CENTER);
-    text("Options Menu", width / 2, 120);
-
-    textSize(24);
-    text("Sound FX: ON/OFF", width / 2, 200);
-    text("Display Timer: ON/OFF", width / 2, 260);*/
+    showBackButton(hideOptions);
 }
 
+// Options menu styling
 function OptionsMenu() {
-    fill(255); 
+    fill(255);
     textSize(32);
     textAlign(CENTER, CENTER);
     text("Options Menu", width / 2, 120);
@@ -111,57 +89,35 @@ function OptionsMenu() {
     text("Display Timer: ON/OFF", width / 2, 260);
 }
 
-function submitNickname() {
-    // Get nickname from input field
-    let nickname = nicknameInput.value();
-    console.log("Nickname:", nickname);
-
-    // Hide input field and submit button after submission
-    nicknameInput.hide();
-    startButton.hide();
-
-    // Additional game initialization logic can be added here
-}
-
-
-function hideNicknameInput() {
-    // Hide nickname input field and submit button
-    if (nicknameInput) {
-        nicknameInput.hide();
-    }
-    startButton.html('Start Game'); // Reset startButton text to "Start Game"
-    startButton.position(100, 300); // Set position back to main menu location
-    startButton.size(180, 80);
-    startButton.mousePressed(startGame); // Reset action to start game
-    startButton.show();
-
-    // Show all main menu buttons again
-    nameButton.show();
-    optionsButton.show();
-    exitButton.show();
-    backButton.hide(); // Hide back button after returning to main menu
-}
-
-
+// Hide the options menu and return to the main menu
 function hideOptions() {
-    // Hide the options menu elements
-    backButton.hide();
     optionScreen.hide();
-    // Show the main menu buttons again
+    backButton.hide();
+
+    // Show main menu buttons again
     startButton.show();
     nameButton.show();
     optionsButton.position(100, 400);
-    nameButton.position(450, 75);
     exitButton.show();
-
-    // Clear any additional text or options-specific UI elements if they were added directly
-    background(backgroundImage); // This will clear the canvas and redraw the background
 }
 
+// Return to the main menu from the game screen
+function returnToMenu() {
+    if (gameIframe) {
+        gameIframe.remove(); // Remove the game iframe
+    }
+    backButton.hide();
 
+    // Show main menu buttons again
+    startButton.show();
+    nameButton.show();
+    optionsButton.show();
+    exitButton.show();
+}
+
+// Exit the game with confirmation
 function exitGame() {
-    if(confirm("Are you sure you want to exit the game?")){
+    if (confirm("Are you sure you want to exit the game?")) {
         window.close();
     }
-    
 }
