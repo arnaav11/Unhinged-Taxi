@@ -8,7 +8,7 @@ class Obstruction {
     /**
      * Draws the obstruction
      */
-    draw() {
+    drawObstruction() {
         
     }
 }

@@ -1,49 +1,71 @@
-let backgroundImage;
-let startButton;
-let optionsButton;
-let exitButton;
+class MainMenu{
+    // backgroundImage;
+    // startButton;
+    // optionsButton;
+    // exitButton;
 
-function preload() {
-    backgroundImage = createImg('assets/background.png');
-    startButton = createImg('assets/start_game.png');
-    optionsButton = createImg('assets/options.png');
-    exitButton = createImg('assets/exit.png');
-}
+    constructor(){
+        this.backgroundImage = createImg('./assets/background.png');
+        this.startButton = createImg('./assets/start_game.png');
+        this.optionsButton = createImg('./assets/options.png');
+        this.exitButton = createImg('./assets/exit.png');
+        state = 0
+    }
 
-function setup() {
-    createCanvas(400, 400);
+    // preload() {
+    //     this.backgroundImage = createImg('assets/background.png');
+    //     this.startButton = createImg('assets/start_game.png');
+    //     this.optionsButton = createImg('assets/options.png');
+    //     this.exitButton = createImg('assets/exit.png');
+    // }
+
+    setupMenu() {
+        createCanvas(400, 400, WEBGL);
+        
+        this.backgroundImage.position(0, 0);
+        this.backgroundImage.size(400, 400);
+
+        this.startButton.position(50, 200);
+        this.startButton.size(120, 50);
+        this.startButton.mousePressed(this.startGame); 
+
+        this.optionsButton.position(50, 250);
+        this.optionsButton.size(75, 50);
+        this.optionsButton.mousePressed(this.showOptions); 
+
+        this.exitButton.position(50, 300);
+        this.exitButton.size(75, 50);
+        this.exitButton.mousePressed(this.exitGame); 
+    }
+
+    // function draw() {
+    //     background(220);
+    // }
+
+    // getState(){
+    //     return state
+    // }
+
+    startGame() {
+        console.log('Start Game button clicked');
+        state = 1
+        console.log("State is now: ", this.state)
+        
+    }
+
+    showOptions() {
+        console.log('Options button clicked');
+        state = 2
     
-    backgroundImage.position(0, 0);
-    backgroundImage.size(400, 400);
+    }
 
-    startButton.position(50, 200);
-    startButton.size(120, 50);
-    startButton.mousePressed(startGame); 
+    exitGame() {
+        console.log('Exit button clicked');
+        state = -1
+        
+    }
 
-    optionsButton.position(50, 250);
-    optionsButton.size(75, 50);
-    optionsButton.mousePressed(showOptions); 
-
-    exitButton.position(50, 300);
-    exitButton.size(75, 50);
-    exitButton.mousePressed(exitGame); 
-}
-
-function draw() {
-    background(220);
-}
-
-function startGame() {
-    console.log('Start Game button clicked');
-    
-}
-
-function showOptions() {
-    console.log('Options button clicked');
-   
-}
-
-function exitGame() {
-    console.log('Exit button clicked');
-    
+    drawMenu() {
+        
+    }
 }
