@@ -5,7 +5,7 @@ let speed = 0
 let playerX = 100
 let playerY = 100
 let dir = [Math.cos(ang), Math.sin(ang)]
-let maxSpeed = 3
+let maxSpeed = 1.5
 let accel = 0
 let maxAccel = 1
 let dAcc = 0.01
@@ -13,10 +13,13 @@ let friction = 0.03
 
 let obstructions = []
 let npcCars = []
-let img;
 
+let img;
 function preload() {
+  map1 = loadImage('Game_map.png');
   img = loadImage('loadImage_0.png'); 
+  
+  
 }
 
 function handleMovementInput(){
@@ -79,8 +82,10 @@ function speedCheck(wOrS){
 
 function gameDraw(){
   background(220)
+  image(map1, -480, -270)
   handleMovement()
   drawPlayer()
+
   
   if (keyIsPressed == true){
     handleMovementInput()
@@ -90,32 +95,36 @@ function gameDraw(){
   }
 }
 
+function setup() {
+  createCanvas(960, 540);
+  
+}
+
+function draw() {
+    push();
+  if (state == 1){
+    gameDraw()
+  }
+}
+
+  // for da car
+function setup() {
+  createCanvas(960, 540, WEBGL)
+  background(220)
+  texture(img);
+}
+
+// also for da car
 function drawPlayer() {
     push(); 
     translate(playerX, playerY);
     rotate(ang);
     texture(img); 
-    rect(-75, -75, 150, 150);
+    strokeWeight(0)
+    rect(-25, -25, 50, 50);
     pop(); 
 
 }
- 
 
-
-function draw() {
-  clear()
-
-  if (state == 1){
-    gameDraw()
-  }
-
-}
-
-function setup() {
-  createCanvas(1000, 1000, WEBGL)
-  angleMode(RADIANS)
-  background(220)
-  texture(img);
-  strokeWeight(0)
-  rect(-500,-500,150,150);
-}
+  
+  
