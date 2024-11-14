@@ -88,11 +88,16 @@ function gameDraw(){
 function drawPlayer(){
   translate(playerX, playerY)
   rotate(ang)
+  texture(img)
   rect(0, 0, 50, 50)
 }
 
+function preload(){
+  img = loadImage("./assets/loadImage_0.png")
+}
+
 function setup() {
-  createCanvas(1000, 1000)
+  createCanvas(1000, 1000, WEBGL)
   angleMode(RADIANS)
   background(220)
   rectMode(CENTER)

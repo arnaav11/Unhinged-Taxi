@@ -20,7 +20,7 @@ class MainMenu{
     // }
 
     setupMenu() {
-        createCanvas(400, 400, WEBGL);
+        canvas = createCanvas(400, 400, WEBGL);
         
         this.backgroundImage.position(0, 0);
         this.backgroundImage.size(400, 400);
@@ -49,7 +49,7 @@ class MainMenu{
     startGame() {
         console.log('Start Game button clicked');
         state = 1
-        console.log("State is now: ", this.state)
+        console.log("State is now: ", state)
         
     }
 

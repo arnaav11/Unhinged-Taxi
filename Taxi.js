@@ -1,6 +1,19 @@
 class Taxi{ 
 
-  constructor(x=100, y=100, ang=0, angSpeed=0.01*Math.PI, speed=0, maxSpeed=3, accel=0, maxAccel=1, dAcc=0.01, img=loadImage("assets/loadImage_0.png")){
+  ang
+  angSpeed
+  speed
+  maxSpeed
+  accel
+  maxAccel
+  dAcc
+  x
+  y
+  img
+
+
+  constructor(x=100, y=100, ang=0, angSpeed=0.01*Math.PI, speed=0, maxSpeed=3, accel=0, maxAccel=1, dAcc=0.01){
+    this.img = loadImage("./assets/loadImage_0.png")
     this.ang = ang
     this.angSpeed = angSpeed
     this.speed = speed
@@ -10,9 +23,12 @@ class Taxi{
     this.dAcc = dAcc
     this.x = x
     this.y = y
-    this.img = img
 
     this.dir = [Math.cos(this.ang), Math.sin(this.ang)]
+  }
+  
+  getPos(){
+    return [this.x, this.y]
   }
 
   handleMovementInput(){
@@ -75,18 +91,21 @@ class Taxi{
   }
   
   setupPlayer() {
-    createCanvas(1000, 1000, WEBGL)
+    removeElements()
+    canvas = createCanvas(1000, 1000, WEBGL)
     angleMode(RADIANS)
     background(220)
     rectMode(CENTER)
   }
 
   drawPlayer() {
-    push(); 
-    translate(this.x, this.y);
-    rotate(this.ang);
-    texture(this.img); 
-    rect(-75, -75, 150, 150);
-    pop();
+
+    // push();
+    translate(this.x, this.y)
+    rotate(this.ang)
+    strokeWeight(0)
+    rect(0, 0, 50, 50)
+    texture(this.img);
+    // pop()
   }
 }

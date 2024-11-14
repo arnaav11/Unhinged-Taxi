@@ -1,17 +1,20 @@
 // import { Taxi } from './Taxi.js'
 // import { MainMenu } from './MainMenu.js'
+let canvas
 
 var player
 var mainMenu
 var state = 0
 let playSetup = false
 
+tick = 60
+
 function preload(){
-  playerImage = loadImage("./assets/loadImage_0.png")
+  
 }
 
 function setup(){
-  player = new Taxi(img = playerImage)
+  player = new Taxi()
   mainMenu = new MainMenu()
   // mainMenu.preload()
   mainMenu.setupMenu()
@@ -23,7 +26,8 @@ function setup(){
 
 function draw(){
 
-  console.log(state)
+  tick -= 1
+
   if (state == 0){
     mainMenu.drawMenu()
   }
@@ -32,12 +36,13 @@ function draw(){
 
     if (!playSetup){
       player.setupPlayer()
+      playSetup = true
+      angleMode(RADIANS)
+    // background(220)
+    rectMode(CENTER)
     }
 
-    clear()
-    background(220)
     player.handleMovement()
-    player.drawPlayer()
 
     if (keyIsPressed){
         player.handleMovementInput()
@@ -45,6 +50,15 @@ function draw(){
     else{
         player.speedCheck(false)
     }
+
+    clear()
+
+    player.drawPlayer()
+    
+  }
+
+  if (tick == 0){
+    tick = 60
   }
 
 
