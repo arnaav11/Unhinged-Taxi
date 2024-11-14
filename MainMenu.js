@@ -30,7 +30,9 @@ function setup() {
     backgroundImage.size(windowWidth, windowHeight);
     const centerX = windowWidth / 3;
    // const center = windowWidth / 20 - 150;
-
+   nameInput = createInput().attribute('placeholder', 'Enter your name').show();
+   nameInput.position(100, 250);
+   nameInput.size(180, 30);
     // Position title and main menu buttons
     nameButton.position(centerX, 75);
     startButton.position(100, 300).size(180, 80).mousePressed(startGame);
@@ -62,6 +64,7 @@ function startGame() {
     startButton.hide();
     optionsButton.hide();
     exitButton.hide();
+    nameInput.hide();
 
     // Show back button to return to main menu
     showBackButton(returnToMenu);
@@ -75,6 +78,7 @@ function startGame() {
 }
 
 function showOptions() {
+    nameInput.hide();
     // Hide main menu buttons
     nameButton.hide();
     startButton.hide();
@@ -101,6 +105,7 @@ function OptionsMenu() {
 
 // Hide the options menu and return to the main menu
 function hideOptions() {
+    nameInput.show();
     optionScreen.hide();
     backButton.hide();
     onButton.hide();
@@ -124,6 +129,7 @@ function returnToMenu() {
     nameButton.show();
     optionsButton.show();
     exitButton.show();
+    nameInput.show();
 }
 
 // Exit the game with confirmation
