@@ -74,7 +74,7 @@ function showOptions() {
     
     // Show option screen and back button
     optionScreen.show();
-    showBackButton(hideOptions);
+    showBackButton(returnToMenu);
 }
 
 // Options menu styling
