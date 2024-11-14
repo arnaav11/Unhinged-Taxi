@@ -5,6 +5,8 @@ let exitButton;
 let backButton;
 let nameButton;
 let optionScreen;
+let onButton;
+let offButton;
 let gameIframe;
 
 // Preload assets
@@ -16,6 +18,8 @@ function preload() {
     backButton = createImg('assets/back png.png');
     nameButton = createImg('assets/Game_Name.png');
     optionScreen = createImg('assets/pngegg.png');
+    onButton = createImg('assets/on.png');
+    offButton = createImg('assets/OFF.png');
 }
 
 function setup() {
@@ -25,14 +29,18 @@ function setup() {
     backgroundImage.position(0, 0);
     backgroundImage.size(windowWidth, windowHeight);
     const centerX = windowWidth / 3;
+   // const center = windowWidth / 20 - 150;
+
     // Position title and main menu buttons
     nameButton.position(centerX, 75);
     startButton.position(100, 300).size(180, 80).mousePressed(startGame);
     optionsButton.position(100, 400).size(180, 80).mousePressed(showOptions);
     exitButton.position(100, 500).size(180, 80).mousePressed(exitGame);
+    onButton.position(600, 200).size(100, 70).mousePressed().hide();
+    offButton.position(700, 200).size(100, 70).mousePressed().hide();
 
     // Hide option screen and back button initially
-    optionScreen.position(300, 100).size(1600, 800).hide();
+    optionScreen.position(CENTER, CENTER).size(180, 80).hide();
     backButton.size(180, 80).hide();
 }
 
@@ -42,7 +50,7 @@ function draw() {
 
 // Function to handle back button display with custom action
 function showBackButton(returnFunction) {
-    backButton.position(windowWidth / 2 - 90, windowHeight - 100);
+    backButton.position(windowWidth / 2 - 90, windowHeight - 80);
     backButton.mousePressed(returnFunction);
     backButton.show();
 }
@@ -61,7 +69,7 @@ function startGame() {
     // Create and display the iframe for Unity game
     gameIframe = createElement('iframe');
     gameIframe.position(0, 0);
-    gameIframe.size(windowWidth, windowHeight - 150); // Adjust height to leave space for back button
+    gameIframe.size(windowWidth, windowHeight - 80); // Adjust height to leave space for back button
     gameIframe.attribute('src', 'unity_game_Levi/index.html');
     gameIframe.attribute('frameborder', '0');
 }
@@ -74,6 +82,8 @@ function showOptions() {
     
     // Show option screen and back button
     optionScreen.show();
+    onButton.show();
+    offButton.show();
     showBackButton(hideOptions);
 }
 
@@ -93,7 +103,8 @@ function OptionsMenu() {
 function hideOptions() {
     optionScreen.hide();
     backButton.hide();
-
+    onButton.hide();
+    offButton.hide();
     // Show main menu buttons again
     startButton.show();
     nameButton.show();
