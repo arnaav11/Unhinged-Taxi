@@ -121,7 +121,7 @@ function drawPlayer() {
     rotate(ang);
     texture(img); 
     strokeWeight(0)
-    rect(-25, -25, 50, 50);
+    rect(-125, -260, 50, 50);
     pop(); 
 
 }
