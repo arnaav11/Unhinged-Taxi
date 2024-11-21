@@ -35,6 +35,7 @@ class Taxi{
     this.playerMoveY = true
     this.drawPos = [x, y]
     this.drawCenter = [-(sizex/2)+(cameraSizeX/2), -(sizey/2)+cameraSizeY/2]
+    mapImage.resize(windowWidth*2, windowHeight*2)
 
     this.dir = [Math.cos(this.ang), Math.sin(this.ang)]
     console.log(windowHeight, windowWidth)
