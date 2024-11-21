@@ -7,9 +7,10 @@ let playerY = 100
 let dir = [Math.cos(ang), Math.sin(ang)]
 let maxSpeed = 3
 let accel = 0
-let maxAccel = 1
-let dAcc = 0.01
+let maxAccel = 0.5
+let dAcc = 0.001
 let friction = 0.03
+let map
 
 let obstructions = []
 let npcCars = []
@@ -88,23 +89,25 @@ function gameDraw(){
 function drawPlayer(){
   translate(playerX, playerY)
   rotate(ang)
+  strokeWeight(0)
   texture(img)
   rect(0, 0, 50, 50)
 }
 
 function preload(){
   img = loadImage("./assets/loadImage_0.png")
+  map = loadImage("./assets/Game_map.png")
 }
 
 function setup() {
   createCanvas(1000, 1000, WEBGL)
   angleMode(RADIANS)
-  background(220)
   rectMode(CENTER)
 }
 
 function draw() {
   clear()
+  background(220)
 
   if (state == 1){
     gameDraw()
