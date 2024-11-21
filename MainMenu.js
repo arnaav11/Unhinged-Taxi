@@ -5,6 +5,10 @@ let exitButton;
 let backButton;
 let nameButton;
 let optionScreen;
+let onButton;
+let on2Button;
+let offButton;
+let off2Button;
 let gameIframe;
 
 // Preload assets
@@ -16,6 +20,10 @@ function preload() {
     backButton = createImg('assets/back png.png');
     nameButton = createImg('assets/Game_Name.png');
     optionScreen = createImg('assets/pngegg.png');
+    onButton = createImg('assets/on.png');
+    on2Button = createImg('assets/on.png');
+    offButton = createImg('assets/OFF.png');
+    off2Button = createImg('assets/OFF.png');
 }
 
 function setup() {
@@ -32,7 +40,7 @@ function setup() {
     exitButton.position(100, 500).size(180, 80).mousePressed(exitGame);
 
     // Hide option screen and back button initially
-    optionScreen.position(300, 100).size(1600, 800).hide();
+    optionScreen.position(centerX*0.73, windowHeight*0.2).size(windowWidth/2, windowHeight*0.6).hide();
     backButton.size(180, 80).hide();
 }
 
@@ -71,10 +79,14 @@ function showOptions() {
     nameButton.hide();
     startButton.hide();
     exitButton.hide();
-    
+
     // Show option screen and back button
     optionScreen.show();
-    showBackButton(returnToMenu);
+    onButton.position(CENTER, CENTER).size(180, 80).show();
+    on2Button.position(windowWidth/2, windowHeight/2).size(180, 80).show();
+    offButton.position(windowWidth, windowHeight).size(180, 80).show();
+    off2Button.position(windowWidth, windowHeight).size(180, 80).show();
+    showBackButton(hideOptions);
 }
 
 // Options menu styling
@@ -93,6 +105,10 @@ function OptionsMenu() {
 function hideOptions() {
     optionScreen.hide();
     backButton.hide();
+    onButton.hide();
+    on2Button.hide();
+    offButton.hide();
+    off2Button.hide();
 
     // Show main menu buttons again
     startButton.show();
