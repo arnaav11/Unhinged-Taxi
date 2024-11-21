@@ -11,7 +11,7 @@ class Taxi{
   y
 
   // 1920 - 60, 1080 - 155
-  constructor(x=-900, y=-600, ang=0, angSpeed=0.01*Math.PI, speed=0, maxSpeed=6, accel=0, maxAccel=1, dAcc=0.01, friction=0.02, sizex = 3840, sizey = 2160, cameraSizeX=1912, cameraSizeY=922, cameraThreshX=450, cameraThreshY=200){
+  constructor(x=-900, y=-600, ang=0, angSpeed=0.01*Math.PI, speed=0, maxSpeed=6, accel=0, maxAccel=1, dAcc=0.01, friction=0.02, sizex = 3840, sizey = 2160, cameraSizeX=windowWidth, cameraSizeY=windowHeight, cameraThreshX=450, cameraThreshY=200){
     // this.img = loadImage("./assets/loadImage_0.png")
     this.ang = ang
     this.angSpeed = angSpeed
@@ -37,6 +37,7 @@ class Taxi{
     this.drawCenter = [-(sizex/2)+(cameraSizeX/2), -(sizey/2)+cameraSizeY/2]
 
     this.dir = [Math.cos(this.ang), Math.sin(this.ang)]
+    console.log(windowHeight, windowWidth)
   }
   
   getPos(){
