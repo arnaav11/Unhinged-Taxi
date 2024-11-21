@@ -82,10 +82,10 @@ function showOptions() {
 
     // Show option screen and back button
     optionScreen.show();
-    onButton.position(CENTER, CENTER).size(180, 80).show();
-    on2Button.position(windowWidth/2, windowHeight/2).size(180, 80).show();
-    offButton.position(windowWidth, windowHeight).size(180, 80).show();
-    off2Button.position(windowWidth, windowHeight).size(180, 80).show();
+    onButton.position(windowWidth*0.445, windowHeight*0.36).size(90, 45).show();
+    on2Button.position(windowWidth*0.52, windowHeight*0.59).size(90, 45).show();
+    offButton.position(windowWidth*0.505, windowHeight*0.36).size(90, 45).show();
+    off2Button.position(windowWidth*0.58, windowHeight*0.59).size(90, 45).show();
     showBackButton(hideOptions);
 }
 
