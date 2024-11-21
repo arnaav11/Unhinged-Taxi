@@ -10,6 +10,8 @@ let on2Button;
 let offButton;
 let off2Button;
 let gameIframe;
+let backgroundMusic;
+
 
 // Preload assets
 function preload() {
@@ -24,11 +26,15 @@ function preload() {
     on2Button = createImg('assets/on.png');
     offButton = createImg('assets/OFF.png');
     off2Button = createImg('assets/OFF.png');
+    backgroundMusic = loadSound('assets/background_music.mp3');
 }
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
     
+    backgroundMusic.loop();
+    backgroundMusic.setVolume(1);
+
     // Set up background
     backgroundImage.position(0, 0);
     backgroundImage.size(windowWidth, windowHeight);
@@ -82,9 +88,19 @@ function showOptions() {
 
     // Show option screen and back button
     optionScreen.show();
-    onButton.position(windowWidth*0.445, windowHeight*0.36).size(90, 45).show();
+    onButton.position(windowWidth * 0.445, windowHeight * 0.36).size(90, 45).show().mousePressed(() => {
+        if (!backgroundMusic.isPlaying()) {
+            backgroundMusic.loop(); // Restart the music if it's stopped
+        }
+        backgroundMusic.setVolume(0.5); // Set volume to 50%
+    });
+
+    // OFF Button: Mutes the music by setting volume to 0
+    offButton.position(windowWidth * 0.505, windowHeight * 0.36).size(90, 45).show().mousePressed(() => {
+        backgroundMusic.setVolume(0); // Set volume to 0 (mute)
+    });
+    
     on2Button.position(windowWidth*0.52, windowHeight*0.59).size(90, 45).show();
-    offButton.position(windowWidth*0.505, windowHeight*0.36).size(90, 45).show();
     off2Button.position(windowWidth*0.58, windowHeight*0.59).size(90, 45).show();
     showBackButton(hideOptions);
 }
@@ -129,6 +145,13 @@ function returnToMenu() {
     nameButton.show();
     optionsButton.show();
     exitButton.show();
+}
+function musicVolume() {
+    if (backgroundMusic.isPlaying()) {
+        backgroundMusic.setVolume(0);
+    } else {
+        backgroundMusic.setVolume(0.5);
+    }
 }
 
 // Exit the game with confirmation
