@@ -22,8 +22,8 @@ class Taxi{
     this.dAcc = dAcc
     this.x = x
     this.y = y
-    this.sizex = sizex
-    this.sizey = sizey
+    this.sizex = windowWidth*2
+    this.sizey = windowHeight*2
     this.friction = friction
     this.cameraSizeX = cameraSizeX
     this.cameraSizeY = cameraSizeY
@@ -127,6 +127,22 @@ class Taxi{
     else if (this.speed > -0.02 && this.speed < 0){
       this.speed = 0
     }
+
+    // if (this.x > windowWidth){
+    //   this.x = windowWidth
+    // }
+    // else if (this.x < -windowWidth){
+    //   this.x = -windowWidth
+    // }
+
+    // if (this.y > windowHeight){
+    //   this.y = windowHeight
+    // }
+    // else if (this.y < -windowHeight){
+    //   this.y = -windowHeight
+    // }
+
+    console.log(this.x, this.y, windowWidth, windowHeight)
   
   }
   
@@ -155,7 +171,7 @@ class Taxi{
   drawMap() {
 
     // console.log(this.drawCenter[0], this.mapPos[0], this.cameraPos[0], this.x, this.x - (this.cameraPos[0] + this.cameraThreshX), this.speed)
-    console.log(this.y, this.cameraPos[1] + this.cameraThreshY)
+    // console.log(this.y, this.cameraPos[1] + this.cameraThreshY)
     
     if (this.x - (this.cameraPos[0] + this.cameraThreshX) > 0.01){
       this.cameraPos[0] = this.x - this.cameraThreshX
