@@ -24,6 +24,7 @@ class Taxi{
     this.mapPos = [0, 0]
     this.playerMoveX = true
     this.playerMoveY = true
+    this.wall = false
     this.drawCenter = [(-sizex/2)+(cameraSizeX/2), -(sizey/2)+(cameraSizeY/2)]
     mapImage.resize(sizex, sizey)
     this.drawPos = [this.drawCenter[0] + this.x - this.cameraPos[0],
@@ -68,8 +69,19 @@ class Taxi{
   handleMovement(){
     this.dir = [Math.cos(this.ang), Math.sin(this.ang)]
   
-    let dx = this.dir[0]*this.speed
-    let dy = this.dir[1]*this.speed
+    let dx, dy;
+
+    if (this.wall && this.speed > 0){
+      this.speed = Math.min(this.speed, 1)
+      this.accel = 0
+    }
+    else if (this.wall && this.speed < 0){
+      this.speed = Math.max(this.speed, -1)
+      this.accel = 0
+    }
+    dx = this.dir[0]*this.speed
+    dy = this.dir[1]*this.speed
+    
 
     this.y -= dy
     this.x += dx
@@ -83,10 +95,36 @@ class Taxi{
 
     this.drawPos[0] = this.drawCenter[0] + this.x - this.cameraPos[0]
     this.drawPos[1] = this.drawCenter[1] - this.y + this.cameraPos[1]
-    
+
+    this.worldBorderCheck()
+    this.doCollisions()
   }
   
+  worldBorderCheck(){
+    if (this.x < -this.sizex/2){
+      this.x = -this.sizex/2
+      this.wall = true
+      return
+    }
+    if (this.x > this.sizex/2){
+      this.x = this.sizex/2
+      this.wall = true
+      return
+    }
 
+    if (this.y < -this.sizey){
+      this.y = -this.sizey
+      this.wall = true
+      return
+    }
+    if (this.y > 0){
+      this.y = 0
+      this.wall = true
+      return
+    }
+
+    this.wall = false
+  }
 
   speedCheck(wOrS){
   
@@ -154,13 +192,74 @@ class Taxi{
     textFont(arial)
   }
 
+  drawHUD(){
+    push()
+    // rotate(this.ang)
+    // text("Hello", this.drawPos[0], this.drawPos[1])
+    // translate(this.drawPos[0], this.drawPos[1])
+    fill("black")
+    textSize(32)
+    // textAlign(CENTER, CENTER)
+    text("" + "\nPosition: "+Math.round(this.x)+", "+Math.round(this.y), -this.sizex/2, -this.sizey/2+32)
+    pop()
+  }
+
+  drawHouseHB(dist, disty){
+    push()
+
+      for (let i = 0; i < houses.length; i++){
+        fill(0, 0, 0, 0)
+        strokeWeight(1)
+        // translate(houses[i].x + this.mapPos[0] + (houses[i].w/2), - houses[i].y - (this.sizey/2) + this.mapPos[1] + (houses[i].h/2))
+        rect(houses[i].x + this.mapPos[0] + (houses[i].w/2), - houses[i].y - (this.sizey/2) + this.mapPos[1] + (houses[i].h/2), houses[i].w, houses[i].h)
+      }
+
+    pop()
+  }
+
+  doCollisions(){
+
+    push()
+
+      for (let i = 0; i < 1; i++){
+        fill(0, 0, 0, 0)
+        strokeWeight(1)
+        // translate(houses[i].x + this.mapPos[0] + (houses[i].w/2), - houses[i].y - (this.sizey/2) + this.mapPos[1] + (houses[i].h/2))
+        // let boxX = houses[i].x + this.mapPos[0] + (houses[i].w/2)
+        // let boxY = - houses[i].y - (this.sizey/2) + this.mapPos[1] + (houses[i].h/2)
+        // rect(, , houses[i].h)
+        box = houses[i]
+        console.log(box.x, box.x + 0.01, box.y, this.x, this.y, ((this.y < box.y) && (this.y > box.y - box.h) && (this.x > box.x) && (this.x - box.x < 2)));
+        
+        if ((this.y < box.y) && (this.y > box.y - box.h) && (this.x >= box.x) && (this.x < box.x + 2)){
+          this.x = box.x
+          this.wall = true
+        }
+        if ((this.y < box.y) && (this.y > box.y - box.h) && (this.x <= box.x + box.w) && (this.x < box.x + 2)){
+          this.x = box.x
+          this.wall = true
+        }
+        if ((this.y < box.y) && (this.y > box.y - box.h) && (this.x >= box.x) && (this.x < box.x + 2)){
+          this.x = box.x
+          this.wall = true
+        }
+        if ((this.y < box.y) && (this.y > box.y - box.h) && (this.x >= box.x) && (this.x < box.x + 2)){
+          this.x = box.x
+          this.wall = true
+        }
+      }
+
+    pop()
+
+  }
+
   drawPlayer() {
 
     push();
     // background(mapImage)
       translate(this.drawPos[0], this.drawPos[1])
       rotate(this.ang)
-      strokeWeight(0)
+      strokeWeight(1)
       texture(img);
       rect(0, 0, 100, 100)
     pop()
@@ -219,12 +318,8 @@ class Taxi{
     this.drawMap()
     // console.log(this.mapPos)
     this.drawPlayer()
-    push()
-    // rotate(this.ang)
-    // text("Hello", this.drawPos[0], this.drawPos[1])
-    fill("black")
-    text("Hello", -windowWidth, windowHeight, 100, 100)
-    pop()
+    this.drawHUD()
+    this.drawHouseHB()
   }
 
 }
