@@ -1,7 +1,7 @@
 let friction = friction
 
 class Obstruction {
-    constructor(x, y, sizeX, sizeY, health, isMovable, ang, speed, maxSpeed, accel, maxAccel){
+    constructor(isMovable=false, ang=0, speed, maxSpeed, accel, maxAccel, x, y, w, h){
 
     }
 

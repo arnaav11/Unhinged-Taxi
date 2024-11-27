@@ -1,17 +1,8 @@
 class Taxi{ 
 
-  ang
-  angSpeed
-  speed
-  maxSpeed
-  accel
-  maxAccel
-  dAcc
-  x
-  y
 
   // 1920 - 60, 1080 - 155
-  constructor(x=-900, y=-600, ang=0, angSpeed=0.01*Math.PI, speed=0, maxSpeed=6, accel=0, maxAccel=1, dAcc=0.01, friction=0.02, sizex = 3840, sizey = 2160, cameraSizeX=windowWidth, cameraSizeY=windowHeight, cameraThreshX=windowWidth/4, cameraThreshY=windowHeight/4){
+  constructor(x, y, ang=0, angSpeed=0.01*Math.PI, speed=0, maxSpeed=6, accel=0, maxAccel=1, dAcc=0.01, friction=0.02, sizex=windowWidth*2, sizey=windowHeight*2, cameraSizeX=windowWidth, cameraSizeY=windowHeight, cameraThreshX=windowWidth/6, cameraThreshY=windowHeight/6){
     // this.img = loadImage("./assets/loadImage_0.png")
     this.ang = ang
     this.angSpeed = angSpeed
@@ -22,23 +13,27 @@ class Taxi{
     this.dAcc = dAcc
     this.x = x
     this.y = y
-    this.sizex = windowWidth*2
-    this.sizey = windowHeight*2
+    this.sizex = sizex
+    this.sizey = sizey
     this.friction = friction
     this.cameraSizeX = cameraSizeX
     this.cameraSizeY = cameraSizeY
     this.cameraThreshX = cameraThreshX
     this.cameraThreshY = cameraThreshY
-    this.cameraPos = [-(sizex/2)+(cameraSizeX/2), -(sizey/2)+cameraSizeY/2]
+    this.cameraPos = [(-sizex/2)+(cameraSizeX/2), -(sizey/2)+(cameraSizeY/2)]
     this.mapPos = [0, 0]
     this.playerMoveX = true
     this.playerMoveY = true
-    this.drawPos = [x, y]
-    this.drawCenter = [-(sizex/2)+(cameraSizeX/2), -(sizey/2)+cameraSizeY/2]
-    mapImage.resize(windowWidth*2, windowHeight*2)
+    this.drawCenter = [(-sizex/2)+(cameraSizeX/2), -(sizey/2)+(cameraSizeY/2)]
+    mapImage.resize(sizex, sizey)
+    this.drawPos = [this.drawCenter[0] + this.x - this.cameraPos[0],
+                      this.drawCenter[1] - this.y + this.cameraPos[1]]
+
+    this.scrollMap(true)
 
     this.dir = [Math.cos(this.ang), Math.sin(this.ang)]
     console.log(windowHeight, windowWidth)
+    // console.log(this.cameraPos, this.drawCenter, this.mapPos, this.drawPos[0])
   }
   
   getPos(){
@@ -142,61 +137,75 @@ class Taxi{
     //   this.y = -windowHeight
     // }
 
-    console.log(this.x, this.y, windowWidth, windowHeight)
+    // console.log(this.x, this.y, windowWidth, windowHeight)
   
   }
   
   setupPlayer() {
+    
     console.log("Setup start for player")
     removeElements()
     canvas = createCanvas(this.sizex, this.sizey, WEBGL)
     // background(mapImage, 255)
     angleMode(RADIANS)
     rectMode(CENTER)
+    this.scrollMap()
     console.log("Setup done for player")
+    textFont(arial)
   }
 
   drawPlayer() {
 
-    // push();
+    push();
     // background(mapImage)
-    translate(this.drawPos[0], this.drawPos[1])
-    rotate(this.ang)
-    strokeWeight(0)
-    rect(0, 0, 100, 100)
-    texture(img);
-    // pop()
+      translate(this.drawPos[0], this.drawPos[1])
+      rotate(this.ang)
+      strokeWeight(0)
+      texture(img);
+      rect(0, 0, 100, 100)
+    pop()
+  }
+
+  scrollMap(st = false){
+    if (st){
+      console.log("check");
+    }
+    
+    if (this.x > (this.cameraPos[0] + this.cameraThreshX)){
+      this.cameraPos[0] = this.x - this.cameraThreshX
+      let dist = this.cameraPos[0] - this.drawCenter[0]
+      this.mapPos[0] = -dist
+    }
+    if (this.x < (this.cameraPos[0] - this.cameraThreshX)){
+      this.cameraPos[0] = this.x + this.cameraThreshX
+      let dist = this.cameraPos[0] - this.drawCenter[0]
+      this.mapPos[0] = -dist
+    }
+
+    if (this.y < (this.cameraPos[1] - this.cameraThreshY)){
+      this.cameraPos[1] = this.y + this.cameraThreshY
+      let dist = this.cameraPos[1] - this.drawCenter[1]
+      this.mapPos[1] = dist
+    }
+    if (this.y > (this.cameraPos[1] + this.cameraThreshY)){
+      // console.log("")
+      this.cameraPos[1] = this.y - this.cameraThreshY
+      let dist = this.cameraPos[1] - this.drawCenter[1]
+      this.mapPos[1] = dist
+    }
   }
 
   drawMap() {
 
     // console.log(this.drawCenter[0], this.mapPos[0], this.cameraPos[0], this.x, this.x - (this.cameraPos[0] + this.cameraThreshX), this.speed)
     // console.log(this.y, this.cameraPos[1] + this.cameraThreshY)
-    
-    if (this.x - (this.cameraPos[0] + this.cameraThreshX) > 0.01){
-      this.cameraPos[0] = this.x - this.cameraThreshX
-      this.mapPos[0] = -(this.cameraPos[0] - this.drawPos[0]) - this.cameraThreshX
-    }
-    if (this.x < (this.cameraPos[0] - this.cameraThreshX)){
-      this.cameraPos[0] = this.x + this.cameraThreshX
-      this.mapPos[0] = -(this.cameraPos[0] - this.drawPos[0]) + this.cameraThreshX
-    }
-
-    if (this.y < (this.cameraPos[1] - this.cameraThreshY)){
-      this.cameraPos[1] = this.y + this.cameraThreshY
-      this.mapPos[1] = (this.cameraPos[1] - this.drawPos[1]) + this.cameraThreshY
-    }
-    if (this.y > (this.cameraPos[1] + this.cameraThreshY)){
-      this.cameraPos[1] = this.y - this.cameraThreshY
-      this.mapPos[1] = (this.cameraPos[1] - this.drawPos[1]) - this.cameraThreshY
-    }
-    
-
     image(mapImage, this.mapPos[0]-(this.sizex/2), this.mapPos[1]-(this.sizey/2))
     // image(mapImage, -2000, -1600)
   }
 
   doTick() {
+    
+    
     if (keyIsPressed){
         this.handleMovementInput()
     }
@@ -206,8 +215,16 @@ class Taxi{
     this.handleMovement()
 
     clear()
+    this.scrollMap()
     this.drawMap()
+    // console.log(this.mapPos)
     this.drawPlayer()
+    push()
+    // rotate(this.ang)
+    // text("Hello", this.drawPos[0], this.drawPos[1])
+    fill("black")
+    text("Hello", -windowWidth, windowHeight, 100, 100)
+    pop()
   }
 
 }

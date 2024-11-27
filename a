@@ -1,8 +1,0 @@
-    if (this.x - (this.cameraPos[0] + this.cameraThreshX) > 0.01){
-      this.cameraPos[0] = this.x - this.cameraThreshX
-      this.mapPos[0] = -(this.cameraPos[0] - this.drawPos[0]) - this.cameraThreshX
-    }
-    if (this.x < (this.cameraPos[0] - this.cameraThreshX)){
-      this.cameraPos[0] = this.x + this.cameraThreshX
-      this.mapPos[0] = -(this.cameraPos[0] - this.drawPos[0]) + this.cameraThreshX
-    }
