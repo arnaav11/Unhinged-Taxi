@@ -210,8 +210,13 @@ class Taxi{
       for (let i = 0; i < houses.length; i++){
         fill(0, 0, 0, 0)
         strokeWeight(1)
+        let box = houses[i]
+        let boxY = box.y * windowHeight / 922
+        let boxX = box.x * windowWidth / 1912
+        let boxW = box.w * windowWidth / 1912
+        let boxH = box.h * windowHeight / 922
         // translate(houses[i].x + this.mapPos[0] + (houses[i].w/2), - houses[i].y - (this.sizey/2) + this.mapPos[1] + (houses[i].h/2))
-        rect(houses[i].x + this.mapPos[0] + (houses[i].w/2), - houses[i].y - (this.sizey/2) + this.mapPos[1] + (houses[i].h/2), houses[i].w, houses[i].h)
+        rect(boxX + this.mapPos[0] + (boxW/2), - boxY - (this.sizey/2) + this.mapPos[1] + (boxH/2), boxW, boxH)
       }
 
     pop()
@@ -227,22 +232,26 @@ class Taxi{
         // let boxY = - houses[i].y - (this.sizey/2) + this.mapPos[1] + (houses[i].h/2)
         // rect(, , houses[i].h)
         box = houses[i]
+        let boxY = box.y * windowHeight / 922
+        let boxX = box.x * windowWidth / 1912
+        let boxW = box.w * windowWidth / 1912
+        let boxH = box.h * windowHeight / 922
         // console.log(box.x, box.x + 0.01, box.y, this.x, this.y, ((this.y < box.y) && (this.y > box.y - box.h) && (this.x > box.x) && (this.x - box.x < 2)));
         
-        if ((this.y <= box.y) && (this.y > box.y - box.h) && (this.x >= box.x) && (this.x < box.x + 10)){
-          this.x = box.x
+        if ((this.y <= boxY) && (this.y > boxY - boxH) && (this.x >= boxX) && (this.x < boxX + 10)){
+          this.x = boxX
           this.wall = true
         }
-        if ((this.y <= box.y) && (this.y > box.y - box.h) && (this.x <= box.x + box.w) && (this.x > box.x + box.w - 10)){
-          this.x = box.x + box.w
+        if ((this.y <= boxY) && (this.y > boxY - boxH) && (this.x <= boxX + boxW) && (this.x > boxX + boxW - 10)){
+          this.x = boxX + boxW
           this.wall = true
         }
-        if ((this.x >= box.x) && (this.x < box.x + box.w) && (this.y >= box.y - box.h) && (this.y < box.y - box.h + 10)){
-          this.y = box.y - box.h
+        if ((this.x >= boxX) && (this.x < boxX + boxW) && (this.y >= boxY - boxH) && (this.y < boxY - boxH + 10)){
+          this.y = boxY - boxH
           this.wall = true
         }
-        if ((this.x >= box.x) && (this.x < box.x + box.w) && (this.y <= box.y) && (this.y > box.y - 10)){
-          this.y = box.y
+        if ((this.x >= boxX) && (this.x < boxX + boxW) && (this.y <= boxY) && (this.y > boxY - 10)){
+          this.y = boxY
           this.wall = true
         }
       }
