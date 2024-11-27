@@ -101,23 +101,23 @@ class Taxi{
   }
   
   worldBorderCheck(){
-    if (this.x < -this.sizex/2){
+    if (this.x <= -this.sizex/2){
       this.x = -this.sizex/2
       this.wall = true
       return
     }
-    if (this.x > this.sizex/2){
+    if (this.x >= this.sizex/2){
       this.x = this.sizex/2
       this.wall = true
       return
     }
 
-    if (this.y < -this.sizey){
+    if (this.y <= -this.sizey){
       this.y = -this.sizey
       this.wall = true
       return
     }
-    if (this.y > 0){
+    if (this.y >= 0){
       this.y = 0
       this.wall = true
       return
@@ -219,9 +219,7 @@ class Taxi{
 
   doCollisions(){
 
-    push()
-
-      for (let i = 0; i < 1; i++){
+      for (let i = 0; i < houses.length; i++){
         fill(0, 0, 0, 0)
         strokeWeight(1)
         // translate(houses[i].x + this.mapPos[0] + (houses[i].w/2), - houses[i].y - (this.sizey/2) + this.mapPos[1] + (houses[i].h/2))
@@ -229,27 +227,25 @@ class Taxi{
         // let boxY = - houses[i].y - (this.sizey/2) + this.mapPos[1] + (houses[i].h/2)
         // rect(, , houses[i].h)
         box = houses[i]
-        console.log(box.x, box.x + 0.01, box.y, this.x, this.y, ((this.y < box.y) && (this.y > box.y - box.h) && (this.x > box.x) && (this.x - box.x < 2)));
+        // console.log(box.x, box.x + 0.01, box.y, this.x, this.y, ((this.y < box.y) && (this.y > box.y - box.h) && (this.x > box.x) && (this.x - box.x < 2)));
         
-        if ((this.y < box.y) && (this.y > box.y - box.h) && (this.x >= box.x) && (this.x < box.x + 2)){
+        if ((this.y <= box.y) && (this.y > box.y - box.h) && (this.x >= box.x) && (this.x < box.x + 10)){
           this.x = box.x
           this.wall = true
         }
-        if ((this.y < box.y) && (this.y > box.y - box.h) && (this.x <= box.x + box.w) && (this.x < box.x + 2)){
-          this.x = box.x
+        if ((this.y <= box.y) && (this.y > box.y - box.h) && (this.x <= box.x + box.w) && (this.x > box.x + box.w - 10)){
+          this.x = box.x + box.w
           this.wall = true
         }
-        if ((this.y < box.y) && (this.y > box.y - box.h) && (this.x >= box.x) && (this.x < box.x + 2)){
-          this.x = box.x
+        if ((this.x >= box.x) && (this.x < box.x + box.w) && (this.y >= box.y - box.h) && (this.y < box.y - box.h + 10)){
+          this.y = box.y - box.h
           this.wall = true
         }
-        if ((this.y < box.y) && (this.y > box.y - box.h) && (this.x >= box.x) && (this.x < box.x + 2)){
-          this.x = box.x
+        if ((this.x >= box.x) && (this.x < box.x + box.w) && (this.y <= box.y) && (this.y > box.y - 10)){
+          this.y = box.y
           this.wall = true
         }
       }
-
-    pop()
 
   }
 
