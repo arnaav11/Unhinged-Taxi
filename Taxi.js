@@ -25,12 +25,21 @@ class Taxi{
     this.playerMoveX = true
     this.playerMoveY = true
     this.wall = false
+    this.startHouse = 0
+    this.DestHouse = 1
+    this.reachedStart = false
+    this.reachedDest = false
+    this.timer = 0
+    this.timerYes = true
+    this.tick = 60
     this.drawCenter = [(-sizex/2)+(cameraSizeX/2), -(sizey/2)+(cameraSizeY/2)]
     mapImage.resize(sizex, sizey)
     this.drawPos = [this.drawCenter[0] + this.x - this.cameraPos[0],
                       this.drawCenter[1] - this.y + this.cameraPos[1]]
 
     this.scrollMap(true)
+    this.chooseStart()
+    this.chooseDest()
 
     this.dir = [Math.cos(this.ang), Math.sin(this.ang)]
     console.log(windowHeight, windowWidth)
@@ -73,11 +82,21 @@ class Taxi{
 
     if (this.wall && this.speed > 0){
       this.speed = Math.min(this.speed, 1)
-      this.accel = 0
+      if (this.accel > 0){
+        this.accel = Math.min(this.accel, 0.1)
+      }
+      else{
+        this.accel = Math.max(this.accel, -0.1)
+      }
     }
     else if (this.wall && this.speed < 0){
       this.speed = Math.max(this.speed, -1)
-      this.accel = 0
+      if (this.accel > 0){
+        this.accel = Math.min(this.accel, 0.1)
+      }
+      else{
+        this.accel = Math.max(this.accel, -0.1)
+      }
     }
     dx = this.dir[0]*this.speed
     dy = this.dir[1]*this.speed
@@ -200,7 +219,7 @@ class Taxi{
     fill("black")
     textSize(32)
     // textAlign(CENTER, CENTER)
-    text("" + "\nPosition: "+Math.round(this.x)+", "+Math.round(this.y), -this.sizex/2, -this.sizey/2+32)
+    text("Time Left: " + this.timer + " Seconds \nPosition: "+Math.round(this.x)+", "+Math.round(this.y) + "\nStartEnd: " + this.startHouse + ", " + this.DestHouse, -this.sizex/2, -this.sizey/2+32)
     pop()
   }
 
@@ -258,6 +277,46 @@ class Taxi{
 
   }
 
+  randomIntGen(min, max){
+    return (Math.floor(Math.random() * (max - min + 1)) + min) 
+  }
+
+  chooseStart(){
+    let startPoint = this.randomIntGen(0, houses.length - 1)
+    this.startHouse = startPoint
+  }
+
+  chooseDest(){
+    let endPoint = this.randomIntGen(0, houses.length)
+    while (endPoint == this.startHouse){
+      endPoint = this.randomIntGen(0, houses.length)
+    }
+
+    this.DestHouse = endPoint
+  }
+
+  drawStartAndDest(){
+    push()
+      let box = houses[this.startHouse]
+      let boxY = box.y * windowHeight / 922
+      let boxX = box.x * windowWidth / 1912
+      let boxW = box.w * windowWidth / 1912
+      let boxH = box.h * windowHeight / 922
+      // translate(houses[i].x + this.mapPos[0] + (houses[i].w/2), - houses[i].y - (this.sizey/2) + this.mapPos[1] + (houses[i].h/2))
+      fill(255, 0, 0, 127)
+      rect(boxX + this.mapPos[0] + (boxW/2), - boxY - (this.sizey/2) + this.mapPos[1] + (boxH/2), boxW, boxH)
+      text
+      box = houses[this.DestHouse]
+      boxY = box.y * windowHeight / 922
+      boxX = box.x * windowWidth / 1912
+      boxW = box.w * windowWidth / 1912
+      boxH = box.h * windowHeight / 922
+      // translate(houses[i].x + this.mapPos[0] + (houses[i].w/2), - houses[i].y - (this.sizey/2) + this.mapPos[1] + (houses[i].h/2))
+      fill(255, 0, 0, 127)
+      rect(boxX + this.mapPos[0] + (boxW/2), - boxY - (this.sizey/2) + this.mapPos[1] + (boxH/2), boxW, boxH)
+    pop()
+  }
+
   drawPlayer() {
 
     push();
@@ -307,8 +366,15 @@ class Taxi{
     // image(mapImage, -2000, -1600)
   }
 
+  doTimer(){
+    if (this.timerYes){
+      this.timer--
+    }
+  }
+
   doTick() {
     
+    this.tick--
     
     if (keyIsPressed){
         this.handleMovementInput()
@@ -325,6 +391,19 @@ class Taxi{
     this.drawPlayer()
     this.drawHUD()
     this.drawHouseHB()
+    this.drawStartAndDest()
+
+    if (this.tick == 0){
+      this.tick = 60
+      this.doTimer()
+    }
+
+    if (this.timer == 0){
+      this.timer = 15
+      this.chooseStart()
+      this.chooseDest()
+    }
+    
   }
 
 }
