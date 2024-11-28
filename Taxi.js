@@ -219,7 +219,7 @@ class Taxi{
     fill("black")
     textSize(32)
     // textAlign(CENTER, CENTER)
-    text("Time Left: " + this.timer + " Seconds \nPosition: "+Math.round(this.x)+", "+Math.round(this.y) + "\nStartEnd: " + this.startHouse + ", " + this.DestHouse, -this.sizex/2, -this.sizey/2+32)
+    text("Time Left: " + this.timer + " Seconds \nPosition: "+Math.round(this.x)+", "+Math.round(this.y) + "\nStartEnd: " + this.startHouse + ", " + this.DestHouse + "\nCheck: " + this.reachedStart + ", " + this.reachedDest, -this.sizex/2, -this.sizey/2+32)
     pop()
   }
 
@@ -250,7 +250,7 @@ class Taxi{
         // let boxX = houses[i].x + this.mapPos[0] + (houses[i].w/2)
         // let boxY = - houses[i].y - (this.sizey/2) + this.mapPos[1] + (houses[i].h/2)
         // rect(, , houses[i].h)
-        box = houses[i]
+        let box = houses[i]
         let boxY = box.y * windowHeight / 922
         let boxX = box.x * windowWidth / 1912
         let boxW = box.w * windowWidth / 1912
@@ -287,9 +287,9 @@ class Taxi{
   }
 
   chooseDest(){
-    let endPoint = this.randomIntGen(0, houses.length)
+    let endPoint = this.randomIntGen(0, houses.length - 1)
     while (endPoint == this.startHouse){
-      endPoint = this.randomIntGen(0, houses.length)
+      endPoint = this.randomIntGen(0, houses.length - 1)
     }
 
     this.DestHouse = endPoint
@@ -317,13 +317,103 @@ class Taxi{
     pop()
   }
 
+  drawNextPoint(){
+    push()
+
+      if (!this.reachedStart){
+
+        // console.log("checking startPoint");
+        
+        fill(255, 0, 255, 127)
+        strokeWeight(0)
+        let box = houses[this.startHouse]
+        let boxY = box.y * windowHeight / 922
+        let boxX = box.x * windowWidth / 1912
+        let boxW = box.w * windowWidth / 1912
+        let boxH = box.h * windowHeight / 922
+        // translate(houses[i].x + this.mapPos[0] + (houses[i].w/2), - houses[i].y - (this.sizey/2) + this.mapPos[1] + (houses[i].h/2))
+        ellipse(boxX + this.mapPos[0] + (boxW/2), - boxY - (this.sizey/2) + this.mapPos[1] + (1.1*boxH), 20)
+      }
+
+      else if(!this.reachedDest){
+        fill(255, 0, 255, 127)
+        strokeWeight(0)
+        let box = houses[this.DestHouse]
+        let boxY = box.y * windowHeight / 922
+        let boxX = box.x * windowWidth / 1912
+        let boxW = box.w * windowWidth / 1912
+        let boxH = box.h * windowHeight / 922
+        // translate(houses[i].x + this.mapPos[0] + (houses[i].w/2), - houses[i].y - (this.sizey/2) + this.mapPos[1] + (houses[i].h/2))
+        ellipse(boxX + this.mapPos[0] + (boxW/2), - boxY - (this.sizey/2) + this.mapPos[1] + (1.1*boxH), 20)
+      }
+
+    pop()
+    
+  }
+
+  checkNextPoint(){
+
+    if (!this.reachedStart){
+
+      console.log("Checking startPoint");
+      
+
+      let box = houses[this.startHouse]
+      let boxY = box.y * windowHeight / 922
+      let boxX = box.x * windowWidth / 1912
+      let boxW = box.w * windowWidth / 1912
+      let boxH = box.h * windowHeight / 922
+
+      let realX = boxX + (boxW/2)
+      let realY = boxY - (1.1*boxH)
+
+      let dirPlayer = [this.x - realX, this.y - realY]
+      let r = 30
+      let dist = (dirPlayer[0]*dirPlayer[0]) + (dirPlayer[1]*dirPlayer[1])
+
+      // console.log(dist, dirPlayer[1], realY, this.y);
+      
+
+      if ((dist <= (r*r)) && this.speed == 0){
+        this.reachedStart = true
+      }
+    }
+
+    else if (!this.reachedDest){
+
+      console.log("Checking startPoint");
+      
+
+      let box = houses[this.DestHouse]
+      let boxY = box.y * windowHeight / 922
+      let boxX = box.x * windowWidth / 1912
+      let boxW = box.w * windowWidth / 1912
+      let boxH = box.h * windowHeight / 922
+
+      let realX = boxX + (boxW/2)
+      let realY = boxY - (1.1*boxH)
+
+      let dirPlayer = [this.x - realX, this.y - realY]
+      let r = 30
+      let dist = (dirPlayer[0]*dirPlayer[0]) + (dirPlayer[1]*dirPlayer[1])
+
+      // console.log(dist, dirPlayer[1], realY, this.y);
+      
+
+      if ((dist <= (r*r)) && this.speed == 0){
+        this.reachedDest = true
+      }
+    }
+
+  }
+
   drawPlayer() {
 
     push();
     // background(mapImage)
       translate(this.drawPos[0], this.drawPos[1])
       rotate(this.ang)
-      strokeWeight(1)
+      strokeWeight(0)
       texture(img);
       rect(0, 0, 100, 100)
     pop()
@@ -383,6 +473,7 @@ class Taxi{
         this.speedCheck(false)
     }
     this.handleMovement()
+    this.checkNextPoint()
 
     clear()
     this.scrollMap()
@@ -390,16 +481,17 @@ class Taxi{
     // console.log(this.mapPos)
     this.drawPlayer()
     this.drawHUD()
-    this.drawHouseHB()
+    // this.drawHouseHB()
     this.drawStartAndDest()
+    this.drawNextPoint()
 
     if (this.tick == 0){
       this.tick = 60
       this.doTimer()
     }
 
-    if (this.timer == 0){
-      this.timer = 15
+    if (this.reachedStart && this.reachedDest){
+      this.timer += 20
       this.chooseStart()
       this.chooseDest()
     }
