@@ -494,6 +494,8 @@ class Taxi{
       this.timer += 20
       this.chooseStart()
       this.chooseDest()
+      this.reachedStart = false
+      this.reachedDest = false
     }
     
   }
