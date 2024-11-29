@@ -12,18 +12,18 @@ class MainMenu{
         state = 0
     }
 
-    // preload() {
-    //     this.backgroundImage = createImg('assets/background.png');
-    //     this.startButton = createImg('assets/start_game.png');
-    //     this.optionsButton = createImg('assets/options.png');
-    //     this.exitButton = createImg('assets/exit.png');
-    // }
+    reloadImages() {
+        this.backgroundImage = createImg('assets/background.png');
+        this.startButton = createImg('assets/start_game.png');
+        this.optionsButton = createImg('assets/options.png');
+        this.exitButton = createImg('assets/exit.png');
+    }
 
     setupMenu() {
-        canvas = createCanvas(400, 400, WEBGL);
+        canvas = createCanvas(windowWidth, windowHeight);
         
         this.backgroundImage.position(0, 0);
-        this.backgroundImage.size(400, 400);
+        this.backgroundImage.size(windowWidth, windowHeight);
 
         this.startButton.position(50, 200);
         this.startButton.size(120, 50);
