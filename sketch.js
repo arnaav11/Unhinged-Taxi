@@ -6,6 +6,7 @@ var player
 var mainMenu
 var state = 0
 let playSetup = false
+let menuSetup = true
 let img
 let arial
 
@@ -84,7 +85,7 @@ function setup(){
   angleMode(RADIANS)
   // background(220)
   rectMode(CENTER)
-  player = new Taxi(-601, -300)
+  player = new Taxi()
   mainMenu = new MainMenu()
   // mainMenu.preload()TypeError: e is undefined
   mainMenu.setupMenu()
@@ -97,14 +98,23 @@ function draw(){
   tick -= 1
 
   if (state == 0){
+
+    if (!menuSetup){
+      mainMenu.reloadImages()
+      mainMenu.setupMenu()
+      menuSetup = true
+      playSetup = false
+    }
     mainMenu.drawMenu()
   }
 
   if (state == 1){
 
     if (!playSetup){
+      player.init()
       player.setupPlayer()
       playSetup = true
+      menuSetup = false
     }
 
     player.doTick()    

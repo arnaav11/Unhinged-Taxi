@@ -2,7 +2,7 @@ class Taxi{
 
 
   // 1920 - 60, 1080 - 155
-  constructor(x, y, ang=0, angSpeed=0.01*Math.PI, speed=0, maxSpeed=6, accel=0, maxAccel=1, dAcc=0.01, friction=0.02, sizex=windowWidth*2, sizey=windowHeight*2, cameraSizeX=windowWidth, cameraSizeY=windowHeight, cameraThreshX=windowWidth/6, cameraThreshY=windowHeight/6){
+  constructor(x=-1809, y=-500, ang=0, angSpeed=0.01*Math.PI, speed=0, maxSpeed=6, accel=0, maxAccel=1, dAcc=0.01, friction=0.02, sizex=windowWidth*2, sizey=windowHeight*2, cameraSizeX=windowWidth, cameraSizeY=windowHeight, cameraThreshX=windowWidth/6, cameraThreshY=windowHeight/6, timer=30){
     // this.img = loadImage("./assets/loadImage_0.png")
     this.ang = ang
     this.angSpeed = angSpeed
@@ -29,7 +29,50 @@ class Taxi{
     this.DestHouse = 1
     this.reachedStart = false
     this.reachedDest = false
-    this.timer = 0
+    this.timer = timer
+    this.timerYes = true
+    this.tick = 60
+    this.drawCenter = [(-sizex/2)+(cameraSizeX/2), -(sizey/2)+(cameraSizeY/2)]
+    mapImage.resize(sizex, sizey)
+    this.drawPos = [this.drawCenter[0] + this.x - this.cameraPos[0],
+                      this.drawCenter[1] - this.y + this.cameraPos[1]]
+
+    this.scrollMap(true)
+    this.chooseStart()
+    this.chooseDest()
+
+    this.dir = [Math.cos(this.ang), Math.sin(this.ang)]
+    console.log(windowHeight, windowWidth)
+    // console.log(this.cameraPos, this.drawCenter, this.mapPos, this.drawPos[0])
+  }
+
+  init(x=-1809, y=-500, ang=0, angSpeed=0.01*Math.PI, speed=0, maxSpeed=6, accel=0, maxAccel=1, dAcc=0.01, friction=0.02, sizex=windowWidth*2, sizey=windowHeight*2, cameraSizeX=windowWidth, cameraSizeY=windowHeight, cameraThreshX=windowWidth/6, cameraThreshY=windowHeight/6, timer=30){
+    this.ang = ang
+    this.angSpeed = angSpeed
+    this.speed = speed
+    this.maxSpeed = maxSpeed
+    this.accel = accel
+    this.maxAccel = maxAccel
+    this.dAcc = dAcc
+    this.x = x
+    this.y = y
+    this.sizex = sizex
+    this.sizey = sizey
+    this.friction = friction
+    this.cameraSizeX = cameraSizeX
+    this.cameraSizeY = cameraSizeY
+    this.cameraThreshX = cameraThreshX
+    this.cameraThreshY = cameraThreshY
+    this.cameraPos = [(-sizex/2)+(cameraSizeX/2), -(sizey/2)+(cameraSizeY/2)]
+    this.mapPos = [0, 0]
+    this.playerMoveX = true
+    this.playerMoveY = true
+    this.wall = false
+    this.startHouse = 0
+    this.DestHouse = 1
+    this.reachedStart = false
+    this.reachedDest = false
+    this.timer = timer
     this.timerYes = true
     this.tick = 60
     this.drawCenter = [(-sizex/2)+(cameraSizeX/2), -(sizey/2)+(cameraSizeY/2)]
@@ -199,7 +242,7 @@ class Taxi{
   }
   
   setupPlayer() {
-    
+    arial = loadFont("assets/ARIAL.TTF")
     console.log("Setup start for player")
     removeElements()
     canvas = createCanvas(this.sizex, this.sizey, WEBGL)
@@ -496,6 +539,10 @@ class Taxi{
       this.chooseDest()
       this.reachedStart = false
       this.reachedDest = false
+    }
+
+    if (this.timer == 0){
+      state = 0
     }
     
   }
