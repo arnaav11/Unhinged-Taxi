@@ -9,6 +9,8 @@ let playSetup = false
 let menuSetup = true
 let img
 let arial
+let nameValue
+let leaderboard = []
 
 let houses = [
   { x: -1827, y: -76, w: 320, h: 340 },

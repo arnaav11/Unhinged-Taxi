@@ -32,6 +32,7 @@ class Taxi{
     this.timer = timer
     this.timerYes = true
     this.tick = 60
+    this.score = 0
     this.drawCenter = [(-sizex/2)+(cameraSizeX/2), -(sizey/2)+(cameraSizeY/2)]
     mapImage.resize(sizex, sizey)
     this.drawPos = [this.drawCenter[0] + this.x - this.cameraPos[0],
@@ -75,6 +76,7 @@ class Taxi{
     this.timer = timer
     this.timerYes = true
     this.tick = 60
+    this.score = 0
     this.drawCenter = [(-sizex/2)+(cameraSizeX/2), -(sizey/2)+(cameraSizeY/2)]
     mapImage.resize(sizex, sizey)
     this.drawPos = [this.drawCenter[0] + this.x - this.cameraPos[0],
@@ -262,7 +264,13 @@ class Taxi{
     fill("black")
     textSize(32)
     // textAlign(CENTER, CENTER)
-    text("Time Left: " + this.timer + " Seconds \nPosition: "+Math.round(this.x)+", "+Math.round(this.y) + "\nStartEnd: " + this.startHouse + ", " + this.DestHouse + "\nCheck: " + this.reachedStart + ", " + this.reachedDest, -this.sizex/2, -this.sizey/2+32)
+
+    let timeText = "Time Left: " + this.timer
+    let scoreText = "Current Score: " + this.score
+
+    let finalText = timeText + "\n" + scoreText
+
+    text(finalText, -this.sizex/2, -this.sizey/2+32)
     pop()
   }
 
@@ -534,6 +542,7 @@ class Taxi{
     }
 
     if (this.reachedStart && this.reachedDest){
+      this.score += this.timer
       this.timer += 20
       this.chooseStart()
       this.chooseDest()
@@ -542,8 +551,15 @@ class Taxi{
     }
 
     if (this.timer == 0){
-      state = 0
+      this.endGame()
     }
+    
+  }
+
+  endGame(){
+    state = 0
+    leaderboard.push({name: nameValue, score: this.score})
+    console.log(leaderboard);
     
   }
 
