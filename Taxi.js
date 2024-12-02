@@ -406,7 +406,7 @@ class Taxi{
 
     if (!this.reachedStart){
 
-      console.log("Checking startPoint");
+      // console.log("Checking startPoint");
       
 
       let box = houses[this.startHouse]
@@ -432,7 +432,7 @@ class Taxi{
 
     else if (!this.reachedDest){
 
-      console.log("Checking startPoint");
+      // console.log("Checking startPoint");
       
 
       let box = houses[this.DestHouse]
@@ -533,7 +533,7 @@ class Taxi{
     this.drawPlayer()
     this.drawHUD()
     // this.drawHouseHB()
-    this.drawStartAndDest()
+    // this.drawStartAndDest()
     this.drawNextPoint()
 
     if (this.tick == 0){
@@ -552,6 +552,7 @@ class Taxi{
 
     if (this.timer == 0){
       this.endGame()
+      mainMenu.fixStuff = true
     }
     
   }

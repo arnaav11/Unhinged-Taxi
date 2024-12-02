@@ -7,10 +7,12 @@ var mainMenu
 var state = 0
 let arial
 let playSetup = false
-let menuSetup = true
+let menuSetup = false
 let img
 var nameValue
 var leaderboard = []
+let musicOn = true
+let musicPlay
 
 let houses = [
   { x: -1827, y: -76, w: 320, h: 340 },
@@ -72,36 +74,79 @@ function handleError(event){
 }
 
 function preload(){
+  musicPlay = loadSound("assets/background_music.mp3")
   mapImage = loadImage("/assets/Game_map.jpg")
   img = loadImage("/assets/car.png", handleImage, handleError)
   arial = loadFont("/assets/ARIAL.TTF")
+
+  player = new Taxi()
+  mainMenu = new MainMenuUpdated()
+}
+
+function mouseClicked(){
+  if (state == 0 ){
+    mainMenu.checkButtons()
+  }
+
+  if (state == 3){
+    state = 0
+  }
 }
 
 function setup(){
+
+  musicPlay.loop()
+  musicPlay.setVolume(1)
 
   // mapImage = loadImage("./assets/Game_map.png")
   // img = loadImage("./assets/car.png")
 
   // mapImage = loadImage("./assets/Game_map.png")
   // textFont(arial)
-  angleMode(RADIANS)
-  // background(220)
-  rectMode(CENTER)
-  player = new Taxi()
-  mainMenu = new MainMenu()
+  // angleMode(RADIANS)
+  // // background(220)
+  rectMode(CORNER)
   // mainMenu.preload()TypeError: e is undefined
-  mainMenu.setupMenu()
   // createCanvas(1000, 1000)
   
 }
 
+function showLeaderBoard(){
+
+  mainMenu.nameInput.hide()
+
+  push()
+  
+    fill("black")
+    rect(0, 0, windowWidth, windowHeight)
+    fill("white")
+    textSize(35)
+    for (i = 0; i < Math.min(10, leaderboard.length); i++){
+      let show = ""
+      show += leaderboard[i].name
+      show += "  " + leaderboard[i].score
+      text(show, (windowWidth/2) - 75, 200 + (50*i))
+    }
+
+  pop()
+}
+
 function draw(){
+
+  if (!musicOn){
+    musicPlay.setVolume(0)
+  }
+  else{
+    musicPlay.setVolume(1)
+  }
 
   tick -= 1
 
   if (state == 0){
 
     if (!menuSetup){
+      rectMode(CORNER)
+      mainMenu.nameInput.show()
       mainMenu.reloadImages()
       mainMenu.setupMenu()
       menuSetup = true
@@ -120,6 +165,10 @@ function draw(){
     }
 
     player.doTick()    
+  }
+
+  if (state == 3){
+    showLeaderBoard()
   }
 
   if (tick == 0){
