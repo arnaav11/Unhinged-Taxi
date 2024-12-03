@@ -2,6 +2,7 @@
 // import { MainMenu } from './MainMenu.js'
 let canvas
 let mapImage
+let backgroundImg
 var player
 var mainMenu
 var state = 0
@@ -12,6 +13,7 @@ let img
 var nameValue
 var leaderboard = []
 let musicOn = true
+let leaderFirst = true
 let musicPlay
 
 let houses = [
@@ -69,11 +71,29 @@ function handleImage(image){
   console.log("success loading the picture")
 }
 
+function sortLeaderboard(){
+  // let maxScoreRN = leaderboard[0].score
+  let maxScoreRNPlace = 0
+
+  for (i = 0; i < leaderboard.length; i++){
+    maxScoreRNPlace = i
+    for (j = i; j < leaderboard.length; i++){
+      if (leaderboard[j].score > leaderboard[maxScoreRNPlace].score){
+        maxScoreRNPlace = j
+      }
+    }
+    temp = leaderboard[i]
+    leaderboard[i] = {name: leaderboard[maxScoreRNPlace].name, score: leaderboard[maxScoreRNPlace].score}
+    leaderboard[maxScoreRNPlace] = {name: temp.name, score: temp.score}
+  }
+}
+
 function handleError(event){
   console.log(event)
 }
 
 function preload(){
+  backgroundImg = loadImage("assets/background.png")
   musicPlay = loadSound("assets/background_music.mp3")
   mapImage = loadImage("/assets/Game_map.jpg")
   img = loadImage("/assets/car.png", handleImage, handleError)
@@ -84,6 +104,8 @@ function preload(){
 }
 
 function mouseClicked(){
+
+  console.log("checking clicks")
   if (state == 0 ){
     mainMenu.checkButtons()
   }
@@ -94,6 +116,8 @@ function mouseClicked(){
 }
 
 function setup(){
+
+  backgroundImg.resize(windowWidth, windowHeight)
 
   musicPlay.loop()
   musicPlay.setVolume(1)
@@ -116,11 +140,13 @@ function showLeaderBoard(){
   mainMenu.nameInput.hide()
 
   push()
-  
-    fill("black")
-    rect(0, 0, windowWidth, windowHeight)
+
+    // translate()
+    // fill("black")
+    translate(-windowWidth, -windowHeight)
+    image(backgroundImg, 0, 0)
     fill("white")
-    textSize(35)
+    textSize(50)
     for (i = 0; i < Math.min(10, leaderboard.length); i++){
       let show = ""
       show += leaderboard[i].name
@@ -132,6 +158,8 @@ function showLeaderBoard(){
 }
 
 function draw(){
+
+  // window.close()
 
   if (!musicOn){
     musicPlay.setVolume(0)
@@ -151,6 +179,7 @@ function draw(){
       mainMenu.setupMenu()
       menuSetup = true
       playSetup = false
+      leaderFirst = true
     }
     mainMenu.drawMenu()
   }
@@ -162,12 +191,14 @@ function draw(){
       player.setupPlayer()
       playSetup = true
       menuSetup = false
+      leaderFirst = true
     }
 
     player.doTick()    
   }
 
   if (state == 3){
+    clear()
     showLeaderBoard()
   }
 
@@ -176,4 +207,8 @@ function draw(){
   }
 
 
+}
+
+function exitGame(){
+  window.close()
 }

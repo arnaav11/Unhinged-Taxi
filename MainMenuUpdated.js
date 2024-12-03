@@ -54,6 +54,11 @@ class MainMenuUpdated{
 			this.optionsOpen = !this.optionsOpen
 		}
 
+		if ((mouseY > baseHeight+100) && (mouseY < baseHeight+150) && (mouseX > 50) && (mouseX < 125)){
+			console.log('Options button pressed')
+			exitGame()
+		}
+
 		if (this.optionsOpen){
 			this.checkOptions()
 		}
