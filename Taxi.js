@@ -2,7 +2,7 @@ class Taxi{
 
 
   // 1920 - 60, 1080 - 155
-  constructor(x=-1809, y=-500, ang=0, angSpeed=0.01*Math.PI, speed=0, maxSpeed=6, accel=0, maxAccel=1, dAcc=0.01, friction=0.02, sizex=windowWidth*2, sizey=windowHeight*2, cameraSizeX=windowWidth, cameraSizeY=windowHeight, cameraThreshX=windowWidth/6, cameraThreshY=windowHeight/6, timer=30){
+  constructor(x=-1809, y=-500, ang=0, angSpeed=0.01*Math.PI, speed=0, maxSpeed=6, accel=0, maxAccel=1, dAcc=0.01, friction=0.02, sizex=windowWidth*2, sizey=windowHeight*2, cameraSizeX=windowWidth, cameraSizeY=windowHeight, cameraThreshX=windowWidth/6, cameraThreshY=windowHeight/6, timer=30, totalLives=5){
     // this.img = loadImage("./assets/loadImage_0.png")
     this.ang = ang
     this.angSpeed = angSpeed
