@@ -267,8 +267,9 @@ class Taxi{
 
     let timeText = "Time Left: " + this.timer
     let scoreText = "Current Score: " + this.score
+    let livesText = "Lives: " + this.lives + " / " + this.totalLives
 
-    let finalText = timeText + "\n" + scoreText
+    let finalText = timeText + "\n" + scoreText + "\n" + livesText
 
     text(finalText, -this.sizex/2, -this.sizey/2+32)
     pop()
@@ -306,22 +307,31 @@ class Taxi{
         let boxX = box.x * windowWidth / 1912
         let boxW = box.w * windowWidth / 1912
         let boxH = box.h * windowHeight / 922
+        let hit = false
         // console.log(box.x, box.x + 0.01, box.y, this.x, this.y, ((this.y < box.y) && (this.y > box.y - box.h) && (this.x > box.x) && (this.x - box.x < 2)));
         
         if ((this.y <= boxY) && (this.y > boxY - boxH) && (this.x >= boxX) && (this.x < boxX + 10)){
           this.x = boxX
-          this.wall = true
+          hit = true
         }
         if ((this.y <= boxY) && (this.y > boxY - boxH) && (this.x <= boxX + boxW) && (this.x > boxX + boxW - 10)){
           this.x = boxX + boxW
-          this.wall = true
+          hit = true
         }
         if ((this.x >= boxX) && (this.x < boxX + boxW) && (this.y >= boxY - boxH) && (this.y < boxY - boxH + 10)){
           this.y = boxY - boxH
-          this.wall = true
+          hit = true
         }
         if ((this.x >= boxX) && (this.x < boxX + boxW) && (this.y <= boxY) && (this.y > boxY - 10)){
           this.y = boxY
+          hit = true
+        }
+
+        if ((hit) && (Math.abs(this.speed) > 2) && (!this.wall)){
+          this.lives -= 1
+          this.wall = true
+        }
+        else if(hit){
           this.wall = true
         }
       }
@@ -550,7 +560,7 @@ class Taxi{
       this.reachedDest = false
     }
 
-    if (this.timer == 0){
+    if (this.timer == 0 || this.lives == 0){
       this.endGame()
       mainMenu.fixStuff = true
     }
@@ -558,9 +568,10 @@ class Taxi{
   }
 
   endGame(){
-    state = 0
+    state = 3
     leaderboard.push({name: nameValue, score: this.score})
     console.log(leaderboard);
+    sortLeaderboard()
     
   }
 
