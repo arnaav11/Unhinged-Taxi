@@ -6,6 +6,7 @@ class MainMenuUpdated{
 		this.exitImg = loadImage("assets/exit.png")
 		this.backgroundImg = loadImage("assets/background.png")
 		this.optionsScreenImg = loadImage("assets/pngegg.png")
+		this.titleImg = loadImage("assets/Game_Name.png")
 
 		this.nameInput = createInput("")
 
@@ -126,12 +127,17 @@ class MainMenuUpdated{
 			image(this.startGameImg, 50, (windowHeight/2) - 100)
 			image(this.optionsImg, 50, (windowHeight/2))
 			image(this.exitImg, 50, (windowHeight/2) + 100)
+			image(this.titleImg, (windowWidth/2)-300, 100)
 
 			// this.debug()
 
 			if (this.optionsOpen){
 				this.drawOptionsScreen()
 			}
+
+			fill("white")
+			textSize(40)
+			text("Name should be 3 characters or more. \nControls: W: forward, A: Left, S: Back, D: Right \nStop at the purple stops to pick up and drop off pasengers. \nThis game is too hard, maybe give up before breaking anything", 100, 0.8*windowHeight)
 
 		pop()
 	}

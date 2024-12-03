@@ -72,20 +72,25 @@ function handleImage(image){
 }
 
 function sortLeaderboard(){
+  console.log("sorting")
   // let maxScoreRN = leaderboard[0].score
   let maxScoreRNPlace = 0
 
+
   for (i = 0; i < leaderboard.length; i++){
     maxScoreRNPlace = i
-    for (j = i; j < leaderboard.length; i++){
+
+    for (j = i; j < leaderboard.length; j++){
       if (leaderboard[j].score > leaderboard[maxScoreRNPlace].score){
         maxScoreRNPlace = j
       }
     }
-    temp = leaderboard[i]
+
+    let temp = leaderboard[i]
     leaderboard[i] = {name: leaderboard[maxScoreRNPlace].name, score: leaderboard[maxScoreRNPlace].score}
     leaderboard[maxScoreRNPlace] = {name: temp.name, score: temp.score}
   }
+
 }
 
 function handleError(event){
