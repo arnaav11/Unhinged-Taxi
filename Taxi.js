@@ -575,7 +575,7 @@ class Taxi{
     state = 3
     leaderboard.push({name: nameValue, score: this.score})
     console.log(leaderboard);
-    
+    sortLeaderboard()
   }
 
 }
