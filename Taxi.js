@@ -27,6 +27,8 @@ class Taxi{
     this.wall = false
     this.startHouse = 0
     this.DestHouse = 1
+    this.totalLives = totalLives
+    this.lives = totalLives
     this.reachedStart = false
     this.reachedDest = false
     this.timer = timer
@@ -47,7 +49,7 @@ class Taxi{
     // console.log(this.cameraPos, this.drawCenter, this.mapPos, this.drawPos[0])
   }
 
-  init(x=-1809, y=-500, ang=0, angSpeed=0.01*Math.PI, speed=0, maxSpeed=6, accel=0, maxAccel=1, dAcc=0.01, friction=0.02, sizex=windowWidth*2, sizey=windowHeight*2, cameraSizeX=windowWidth, cameraSizeY=windowHeight, cameraThreshX=windowWidth/6, cameraThreshY=windowHeight/6, timer=30){
+  init(x=-1809, y=-500, ang=0, angSpeed=0.01*Math.PI, speed=0, maxSpeed=6, accel=0, maxAccel=1, dAcc=0.01, friction=0.02, sizex=windowWidth*2, sizey=windowHeight*2, cameraSizeX=windowWidth, cameraSizeY=windowHeight, cameraThreshX=windowWidth/6, cameraThreshY=windowHeight/6, timer=30, totalLives=5){
     this.ang = ang
     this.angSpeed = angSpeed
     this.speed = speed
@@ -77,6 +79,8 @@ class Taxi{
     this.timerYes = true
     this.tick = 60
     this.score = 0
+    this.totalLives = totalLives
+    this.lives = totalLives
     this.drawCenter = [(-sizex/2)+(cameraSizeX/2), -(sizey/2)+(cameraSizeY/2)]
     mapImage.resize(sizex, sizey)
     this.drawPos = [this.drawCenter[0] + this.x - this.cameraPos[0],
@@ -560,7 +564,7 @@ class Taxi{
       this.reachedDest = false
     }
 
-    if (this.timer == 0 || this.lives == 0){
+    if (this.timer == 0 || this.lives == 0 ){
       this.endGame()
       mainMenu.fixStuff = true
     }
@@ -571,7 +575,6 @@ class Taxi{
     state = 3
     leaderboard.push({name: nameValue, score: this.score})
     console.log(leaderboard);
-    sortLeaderboard()
     
   }
 
