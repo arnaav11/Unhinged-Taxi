@@ -100,15 +100,25 @@ class MainMenuUpdated{
 			textSize(44)
 			
 			fill("white")
-			text("Music: On / Off", (windowWidth/2) + 75, (windowHeight/2))
+			text("Music: ", (windowWidth/2) + 75, (windowHeight/2))
 			if (!musicOn){
-				fill(0, 0, 0, 127)
-				rect((windowWidth/2) + 215, (windowHeight/2)-44, 60, 50)
+				fill(255, 255, 255, 127)
 			}
-			else{
-				fill(0, 0, 0, 127)
-				rect((windowWidth/2) + 305, (windowHeight/2)-44, 65, 50)
+			text("On", (windowWidth/2) + 225, (windowHeight/2))
+			fill(255, 255, 255)
+			text("/", (windowWidth/2) + 300, (windowHeight/2))
+			if (musicOn){
+				fill(255, 255, 255, 127)
 			}
+			text("Off", (windowWidth/2) + 325, (windowHeight/2))
+			// if (!musicOn){
+			// 	fill(0, 0, 0, 127)
+			// 	rect((windowWidth/2) + 215, (windowHeight/2)-44, 60, 50)
+			// }
+			// else{
+			// 	fill(0, 0, 0, 127)
+			// 	rect((windowWidth/2) + 305, (windowHeight/2)-44, 65, 50)
+			// }
 
 			// text("Hello", (windowWidth/2) + 125, (windowHeight * 0.5) + 64)
 

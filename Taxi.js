@@ -401,7 +401,7 @@ class Taxi{
       }
 
       else if(!this.reachedDest){
-        fill(255, 0, 255, 127)
+        fill(255, 255, 0, 127)
         strokeWeight(0)
         let box = houses[this.DestHouse]
         let boxY = box.y * windowHeight / 922

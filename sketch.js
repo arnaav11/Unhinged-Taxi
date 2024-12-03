@@ -15,6 +15,7 @@ var leaderboard = []
 let musicOn = true
 let leaderFirst = true
 let musicPlay
+let leaderboardTitle
 
 let houses = [
   { x: -1827, y: -76, w: 320, h: 340 },
@@ -103,6 +104,7 @@ function preload(){
   mapImage = loadImage("/assets/Game_map.jpg")
   img = loadImage("/assets/car.png", handleImage, handleError)
   arial = loadFont("/assets/ARIAL.TTF")
+  leaderboardTitle = loadImage("assets/leaderboard.png")
 
   player = new Taxi()
   mainMenu = new MainMenuUpdated()
@@ -150,14 +152,19 @@ function showLeaderBoard(){
     // fill("black")
     translate(-windowWidth, -windowHeight)
     image(backgroundImg, 0, 0)
+    image(leaderboardTitle, (windowWidth/2)-200, 100)
     fill("white")
     textSize(50)
+    let x = 1
     for (i = 0; i < Math.min(10, leaderboard.length); i++){
       let show = ""
       show += leaderboard[i].name
       show += "  " + leaderboard[i].score
-      text(show, (windowWidth/2) - 75, 200 + (50*i))
+      text(show, (windowWidth/2) - 75, 250 + (50*i))
+      x++
     }
+
+    text("Click to Continue", (windowWidth/2) - 175, 250 + (50*(x)))
 
   pop()
 }
