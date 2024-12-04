@@ -221,7 +221,7 @@ function getRotatedBoundingBox(x, y, width, height, angle) {
   };
 }
 
-function drawPlayer() {
+function drawPlayer() { // builds the actual car
   push();
   translate(playerX, playerY);
   rotate(ang);
@@ -230,7 +230,7 @@ function drawPlayer() {
   pop();
 }
 
-function gameDraw() {
+function gameDraw() { //everything in the game is drawn here
   background(220);
   image(map1, -480, -270);
   handleMovement();
@@ -267,7 +267,7 @@ function barrier() {
   }
 }
 
-function setup() {
+function setup() { //setup for the car image and creating the canvas for bg
   createCanvas(960, 540, WEBGL);
   maskImg = createGraphics(50, 50);
 
@@ -278,7 +278,7 @@ function setup() {
   img.mask(maskImg); // Apply mask to car
 }
 
-function draw() {
+function draw() { //gameDraw is called here and state is pushed to game mode
   push();
   if (state == 1) {
     gameDraw();
