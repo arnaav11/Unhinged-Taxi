@@ -1,22 +1,24 @@
-// import { Taxi } from './Taxi.js'
-// import { MainMenu } from './MainMenu.js'
-let canvas
-let mapImage
-let backgroundImg
-var player
-var mainMenu
-var state = 0
-let arial
-let playSetup = false
-let menuSetup = false
-let img
-var nameValue
-var leaderboard = []
-let musicOn = true
-let leaderFirst = true
-let musicPlay
-let leaderboardTitle
+// import { Taxi } from './Taxi.js'  // Importing Taxi class (commented out)
+// import { MainMenu } from './MainMenu.js'  // Importing MainMenu class (commented out)
 
+let canvas  // Declare canvas variable
+let mapImage  // Declare map image variable
+let backgroundImg  // Declare background image variable
+var player  // Declare player variable
+var mainMenu  // Declare mainMenu variable
+var state = 0  // Initial game state
+let arial  // Declare font variable
+let playSetup = false  // Flag to check if play setup is done
+let menuSetup = false  // Flag to check if menu setup is done
+let img  // Declare image variable
+var nameValue  // Declare variable for player name
+var leaderboard = []  // Array to hold leaderboard data
+let musicOn = true  // Flag for music status
+let leaderFirst = true  // Flag for leaderboard display
+let musicPlay  // Music player variable
+let leaderboardTitle  // Variable for leaderboard title image
+
+// Array of house objects with coordinates and size
 let houses = [
   { x: -1827, y: -76, w: 320, h: 340 },
   { x: -1480, y: -70, w: 420, h: 340 },
@@ -57,6 +59,7 @@ let houses = [
   // FINAL ROW OF HOUSES 26-33
 ];
 
+// Array for map borders (top, bottom, left, right)
 let mapBorders = [
   { x: -470, y: -265, w: 940, h: 20 }, // Top border
   { x: -470, y: 310, w: 940, h: 20 }, // Bottom border
@@ -64,19 +67,18 @@ let mapBorders = [
   { x: -510, y: -235, w: 30, h: 510 }, // Left border
 ];
 
+let tick = 60  // Frame rate (ticks per second)
 
-tick = 60
-
+// Handle image loading
 function handleImage(image){
   img = image
   console.log("success loading the picture")
 }
 
+// Sort the leaderboard based on score
 function sortLeaderboard(){
   console.log("sorting")
-  // let maxScoreRN = leaderboard[0].score
   let maxScoreRNPlace = 0
-
 
   for (i = 0; i < leaderboard.length; i++){
     maxScoreRNPlace = i
@@ -91,136 +93,117 @@ function sortLeaderboard(){
     leaderboard[i] = {name: leaderboard[maxScoreRNPlace].name, score: leaderboard[maxScoreRNPlace].score}
     leaderboard[maxScoreRNPlace] = {name: temp.name, score: temp.score}
   }
-
 }
 
+// Handle error events
 function handleError(event){
   console.log(event)
 }
 
+// Preload assets before starting the game
 function preload(){
-  backgroundImg = loadImage("assets/background.png")
-  musicPlay = loadSound("assets/background_music.mp3")
-  mapImage = loadImage("/assets/Game_map.jpg")
-  img = loadImage("/assets/car.png", handleImage, handleError)
-  arial = loadFont("/assets/ARIAL.TTF")
-  leaderboardTitle = loadImage("assets/leaderboard.png")
+  backgroundImg = loadImage("assets/background.png")  // Load background image
+  musicPlay = loadSound("assets/background_music.mp3")  // Load background music
+  mapImage = loadImage("/assets/Game_map.jpg")  // Load map image
+  img = loadImage("/assets/car.png", handleImage, handleError)  // Load car image
+  arial = loadFont("/assets/ARIAL.TTF")  // Load font
+  leaderboardTitle = loadImage("assets/leaderboard.png")  // Load leaderboard title image
 
-  player = new Taxi()
-  mainMenu = new MainMenuUpdated()
+  player = new Taxi()  // Create player instance
+  mainMenu = new MainMenuUpdated()  // Create main menu instance
 }
 
+// Check for mouse clicks
 function mouseClicked(){
-
   console.log("checking clicks")
   if (state == 0 ){
-    mainMenu.checkButtons()
+    mainMenu.checkButtons()  // Check buttons in the main menu
   }
 
   if (state == 3){
-    state = 0
+    state = 0  // Reset state to main menu
   }
 }
 
+// Setup the game environment
 function setup(){
+  backgroundImg.resize(windowWidth, windowHeight)  // Resize background image to fit window
+  musicPlay.loop()  // Start music loop
+  musicPlay.setVolume(1)  // Set music volume to max
 
-  backgroundImg.resize(windowWidth, windowHeight)
-
-  musicPlay.loop()
-  musicPlay.setVolume(1)
-
-  // mapImage = loadImage("./assets/Game_map.png")
-  // img = loadImage("./assets/car.png")
-
-  // mapImage = loadImage("./assets/Game_map.png")
-  // textFont(arial)
-  // angleMode(RADIANS)
-  // // background(220)
-  rectMode(CORNER)
-  // mainMenu.preload()TypeError: e is undefined
-  // createCanvas(1000, 1000)
-  
+  rectMode(CORNER)  // Set rectangle drawing mode to corner
 }
 
+// Show the leaderboard on screen
 function showLeaderBoard(){
-
-  mainMenu.nameInput.hide()
+  mainMenu.nameInput.hide()  // Hide the name input field
 
   push()
-
-    // translate()
-    // fill("black")
-    translate(-windowWidth, -windowHeight)
-    image(backgroundImg, 0, 0)
-    image(leaderboardTitle, (windowWidth/2)-200, 100)
-    fill("white")
-    textSize(50)
+    translate(-windowWidth, -windowHeight)  // Move the canvas for the leaderboard effect
+    image(backgroundImg, 0, 0)  // Draw the background image
+    image(leaderboardTitle, (windowWidth/2)-200, 100)  // Draw leaderboard title
+    fill("white")  // Set text color to white
+    textSize(50)  // Set text size
     let x = 1
-    for (i = 0; i < Math.min(10, leaderboard.length); i++){
+    for (i = 0; i < Math.min(10, leaderboard.length); i++){  // Display top 10 leaderboard entries
       let show = ""
       show += leaderboard[i].name
       show += "  " + leaderboard[i].score
-      text(show, (windowWidth/2) - 75, 250 + (50*i))
+      text(show, (windowWidth/2) - 75, 250 + (50*i))  // Display each leaderboard entry
       x++
     }
 
-    text("Click to Continue", (windowWidth/2) - 175, 250 + (50*(x)))
-
+    text("Click to Continue", (windowWidth/2) - 175, 250 + (50*(x)))  // Display click-to-continue message
   pop()
 }
 
+// Main game loop (draw each frame)
 function draw(){
-
-  // window.close()
-
   if (!musicOn){
-    musicPlay.setVolume(0)
+    musicPlay.setVolume(0)  // Mute music if it's off
   }
   else{
-    musicPlay.setVolume(1)
+    musicPlay.setVolume(1)  // Play music if it's on
   }
 
-  tick -= 1
+  tick -= 1  // Decrease tick count
 
-  if (state == 0){
-
+  if (state == 0){  // Main menu state
     if (!menuSetup){
       rectMode(CORNER)
-      mainMenu.nameInput.show()
-      mainMenu.reloadImages()
-      mainMenu.setupMenu()
-      menuSetup = true
-      playSetup = false
-      leaderFirst = true
+      mainMenu.nameInput.show()  // Show name input field
+      mainMenu.reloadImages()  // Reload menu images
+      mainMenu.setupMenu()  // Setup the menu
+      menuSetup = true  // Set menu setup flag to true
+      playSetup = false  // Reset play setup flag
+      leaderFirst = true  // Reset leaderboard flag
     }
-    mainMenu.drawMenu()
+    mainMenu.drawMenu()  // Draw the menu
   }
 
-  if (state == 1){
-
+  if (state == 1){  // Game state
     if (!playSetup){
-      player.init()
-      player.setupPlayer()
-      playSetup = true
-      menuSetup = false
-      leaderFirst = true
+      player.init()  // Initialize player
+      player.setupPlayer()  // Setup player
+      playSetup = true  // Set play setup flag to true
+      menuSetup = false  // Reset menu setup flag
+      leaderFirst = true  // Reset leaderboard flag
     }
 
-    player.doTick()    
+    player.doTick()  // Update player state each tick    
   }
 
-  if (state == 3){
-    clear()
-    showLeaderBoard()
+  if (state == 3){  // Leaderboard state
+    clear()  // Clear the screen
+    showLeaderBoard()  // Show leaderboard
   }
 
-  if (tick == 0){
+  if (tick == 0){  // Reset tick counter every 60 frames
     tick = 60
   }
-
-
 }
 
+// Function to exit the game
 function exitGame(){
-  window.close()
+  window.close()  // Close the browser window
 }

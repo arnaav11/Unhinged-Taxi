@@ -4,6 +4,8 @@ class Taxi{
   // 1920 - 60, 1080 - 155
   constructor(x=-1809, y=-500, ang=0, angSpeed=0.01*Math.PI, speed=0, maxSpeed=6, accel=0, maxAccel=1, dAcc=0.01, friction=0.02, sizex=windowWidth*2, sizey=windowHeight*2, cameraSizeX=windowWidth, cameraSizeY=windowHeight, cameraThreshX=windowWidth/6, cameraThreshY=windowHeight/6, timer=30, totalLives=5){
     // this.img = loadImage("./assets/loadImage_0.png")
+
+    // innitializes all default car settings
     this.ang = ang
     this.angSpeed = angSpeed
     this.speed = speed
@@ -40,6 +42,7 @@ class Taxi{
     this.drawPos = [this.drawCenter[0] + this.x - this.cameraPos[0],
                       this.drawCenter[1] - this.y + this.cameraPos[1]]
 
+                      // starts the map and destination / start points
     this.scrollMap(true)
     this.chooseStart()
     this.chooseDest()
@@ -48,7 +51,7 @@ class Taxi{
     console.log(windowHeight, windowWidth)
     // console.log(this.cameraPos, this.drawCenter, this.mapPos, this.drawPos[0])
   }
-
+ // re initializes taxi properties when game go end
   init(x=-1809, y=-500, ang=0, angSpeed=0.01*Math.PI, speed=0, maxSpeed=6, accel=0, maxAccel=1, dAcc=0.01, friction=0.02, sizex=windowWidth*2, sizey=windowHeight*2, cameraSizeX=windowWidth, cameraSizeY=windowHeight, cameraThreshX=windowWidth/6, cameraThreshY=windowHeight/6, timer=30, totalLives=5){
     this.ang = ang
     this.angSpeed = angSpeed
@@ -95,14 +98,16 @@ class Taxi{
     // console.log(this.cameraPos, this.drawCenter, this.mapPos, this.drawPos[0])
   }
   
+  // position of the taxi
   getPos(){
     return [this.x, this.y]
   }
-
+ // preloads the car
   preloadPlayer(){
     this.img = loadImage("assets/car.png")
   }
 
+  // self explanatory function
   handleMovementInput(){
     let ws = false
     if (keyIsDown(65)){
@@ -123,12 +128,13 @@ class Taxi{
     this.speedCheck(ws)
   
   }
-  
+   // works with input to move da car
   handleMovement(){
     this.dir = [Math.cos(this.ang), Math.sin(this.ang)]
   
     let dx, dy;
 
+    // if u hit a wall, change movement
     if (this.wall && this.speed > 0){
       this.speed = Math.min(this.speed, 1)
       if (this.accel > 0){
@@ -167,7 +173,7 @@ class Taxi{
     this.worldBorderCheck()
     this.doCollisions()
   }
-  
+  // dont let car leave the world
   worldBorderCheck(){
     if (this.x <= -this.sizex/2){
       this.x = -this.sizex/2
@@ -193,7 +199,7 @@ class Taxi{
 
     this.wall = false
   }
-
+ // dont let car go too fast or go too fast too fast (accel)
   speedCheck(wOrS){
   
     this.speed += this.accel
@@ -259,7 +265,7 @@ class Taxi{
     console.log("Setup done for player")
     textFont(arial)
   }
-
+// everything you see in the hud, right here
   drawHUD(){
     push()
     // rotate(this.ang)
@@ -296,7 +302,7 @@ class Taxi{
 
     pop()
   }
-
+ // dont let me hit da house
   doCollisions(){
 
       for (let i = 0; i < houses.length; i++){
@@ -341,16 +347,16 @@ class Taxi{
       }
 
   }
-
+// gives me random numba 
   randomIntGen(min, max){
     return (Math.floor(Math.random() * (max - min + 1)) + min) 
   }
-
+// gives me random house from random numba
   chooseStart(){
     let startPoint = this.randomIntGen(0, houses.length - 1)
     this.startHouse = startPoint
   }
-
+// gives me random destination house from randum numba
   chooseDest(){
     let endPoint = this.randomIntGen(0, houses.length - 1)
     while (endPoint == this.startHouse){
@@ -471,7 +477,7 @@ class Taxi{
     }
 
   }
-
+ // draws the player car
   drawPlayer() {
 
     push();
@@ -512,7 +518,7 @@ class Taxi{
       this.mapPos[1] = dist
     }
   }
-
+ // da map
   drawMap() {
 
     // console.log(this.drawCenter[0], this.mapPos[0], this.cameraPos[0], this.x, this.x - (this.cameraPos[0] + this.cameraThreshX), this.speed)
@@ -520,7 +526,7 @@ class Taxi{
     image(mapImage, this.mapPos[0]-(this.sizex/2), this.mapPos[1]-(this.sizey/2))
     // image(mapImage, -2000, -1600)
   }
-
+// timer for da  hud
   doTimer(){
     if (this.timerYes){
       this.timer--
@@ -570,7 +576,7 @@ class Taxi{
     }
     
   }
-
+ // if you die, this is what you see
   endGame(){
     state = 3
     leaderboard.push({name: nameValue, score: this.score})
