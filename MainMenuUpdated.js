@@ -83,6 +83,7 @@ class MainMenuUpdated {
 		this.checkOptions();
 	  }
 	}
+<<<<<<< HEAD
   
 	// Check if the music On/Off buttons are clicked
 	checkOptions() {
@@ -95,6 +96,23 @@ class MainMenuUpdated {
 	  if ((mouseX > (windowWidth / 2) + 305) && (mouseX < (windowWidth / 2) + 360) && (mouseY > (windowHeight / 2) - 44) && (mouseY < (windowHeight / 2) + 6)) {
 		musicOn = false;
 	  }
+=======
+
+	checkOptions(){
+
+		if ((mouseX > (windowWidth/2) + 15) && (mouseX < (windowWidth/2) + 125) && (mouseY > (windowHeight/2) - 44) && (mouseY < (windowHeight/2) + 6)){
+			musicOn = true
+			return true
+		}
+
+		if ((mouseX > (windowWidth/2) + 105) && (mouseX < (windowWidth/2) + 200) && (mouseY > (windowHeight/2) - 44) && (mouseY < (windowHeight/2) + 6)){
+			musicOn = false
+			return true
+		}
+
+		return false
+
+>>>>>>> b15a230 (Make it look better)
 	}
   
 	// Start the game if the name input is valid
@@ -137,6 +155,7 @@ class MainMenuUpdated {
   
 	  pop();
 	}
+<<<<<<< HEAD
   
 	// Draw the main menu
 	drawMenu() {
@@ -170,6 +189,40 @@ class MainMenuUpdated {
 	  text("Name should be 3 characters or more. \nControls: W: forward, A: Left, S: Back, D: Right \nStop at the purple stops to pick up and drop off passengers. \nThis game is too hard, maybe give up before breaking anything", 100, 0.8 * windowHeight);
   
 	  pop();
+=======
+
+	drawMenu(){
+		clear()
+
+		if (this.optionsOpen){
+			this.nameInput.hide()
+		}
+		else{
+			this.nameInput.show()
+		}
+
+		push()
+			imageMode(CORNER)
+			if (this.fixStuff){
+				translate(-(windowWidth/2), -windowHeight/2)
+			}
+			image(this.backgroundImg, 0, 0)
+			image(this.startGameImg, 50, (windowHeight/2) - 100)
+			image(this.optionsImg, 50, (windowHeight/2))
+			image(this.exitImg, 50, (windowHeight/2) + 100)
+			image(this.titleImg, (windowWidth/2)-300, 100)
+
+			fill("white")
+			textSize(40)
+			text("Name should be 3 characters or more. \nControls: W: forward, A: Left, S: Back, D: Right \nStop at the purple stops to pick up and drop off pasengers. \nThis game is too hard, maybe give up before breaking anything", 100, 0.8*windowHeight)
+			// this.debug()
+
+			if (this.optionsOpen){
+				this.drawOptionsScreen()
+			}			
+
+		pop()
+>>>>>>> b15a230 (Make it look better)
 	}
   
 	// Debug function (show mouse position for debugging)
