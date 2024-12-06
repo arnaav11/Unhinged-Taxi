@@ -59,6 +59,13 @@ class MainMenuUpdated {
 	  console.log('checking buttons');
   
 	  let baseHeight = windowHeight / 2;
+
+	  if (this.optionsOpen){
+	  	let click = this.checkOptions()
+	  	if (!click){
+	  		this.optionsOpen = false
+	  	}
+	  }
   
 	  // Check if the Start Game button was clicked
 	  if ((mouseY > baseHeight - 100) && (mouseY < baseHeight - 50) && (mouseX > 50) && (mouseX < 170)) {
@@ -79,25 +86,12 @@ class MainMenuUpdated {
 	  }
   
 	  // If options are open, check options
-	  if (this.optionsOpen) {
-		this.checkOptions();
-	  }
+	  // if (this.optionsOpen) {
+	// 	this.checkOptions();
+	  // }
 	}
-<<<<<<< HEAD
   
 	// Check if the music On/Off buttons are clicked
-	checkOptions() {
-	  // If the music On button is clicked
-	  if ((mouseX > (windowWidth / 2) + 215) && (mouseX < (windowWidth / 2) + 275) && (mouseY > (windowHeight / 2) - 44) && (mouseY < (windowHeight / 2) + 6)) {
-		musicOn = true;
-	  }
-  
-	  // If the music Off button is clicked
-	  if ((mouseX > (windowWidth / 2) + 305) && (mouseX < (windowWidth / 2) + 360) && (mouseY > (windowHeight / 2) - 44) && (mouseY < (windowHeight / 2) + 6)) {
-		musicOn = false;
-	  }
-=======
-
 	checkOptions(){
 
 		if ((mouseX > (windowWidth/2) + 15) && (mouseX < (windowWidth/2) + 125) && (mouseY > (windowHeight/2) - 44) && (mouseY < (windowHeight/2) + 6)){
@@ -112,7 +106,6 @@ class MainMenuUpdated {
 
 		return false
 
->>>>>>> b15a230 (Make it look better)
 	}
   
 	// Start the game if the name input is valid
@@ -129,68 +122,35 @@ class MainMenuUpdated {
 	  push();
   
 	  // Draw the background rectangle for options screen
-	  fill("black");
-	  rect(300, windowHeight / 10, windowWidth - 350, windowHeight * 0.8);
+	  // fill("black");
+	  // rect(300, windowHeight / 10, windowWidth - 350, windowHeight * 0.8);
+	  filter(BLUR)
   
 	  // Set the font size for the text
 	  textSize(44);
   
 	  // Draw the "Music: " label
 	  fill("white");
-	  text("Music: ", (windowWidth / 2) + 75, (windowHeight / 2));
+	  text("Music: ", (windowWidth / 2) - 125, (windowHeight / 2));
   
 	  // Draw the "On" and "Off" options with transparency if not selected
 	  if (!musicOn) {
 		fill(255, 255, 255, 127);
 	  }
-	  text("On", (windowWidth / 2) + 225, (windowHeight / 2));
+	  text("On", (windowWidth / 2) + 25, (windowHeight / 2));
   
 	  fill(255, 255, 255);
-	  text("/", (windowWidth / 2) + 300, (windowHeight / 2));
+	  text("/", (windowWidth / 2) + 100, (windowHeight / 2));
   
 	  if (musicOn) {
 		fill(255, 255, 255, 127);
 	  }
-	  text("Off", (windowWidth / 2) + 325, (windowHeight / 2));
+	  text("Off", (windowWidth / 2) + 125, (windowHeight / 2));
   
 	  pop();
 	}
-<<<<<<< HEAD
   
 	// Draw the main menu
-	drawMenu() {
-	  clear();  // Clear the canvas
-  
-	  push();
-  
-	  // Set image mode to corner (top-left corner as the reference point)
-	  imageMode(CORNER);
-  
-	  // If fixStuff is enabled, apply translation for fixing any screen issues
-	  if (this.fixStuff) {
-		translate(-(windowWidth / 2), -windowHeight / 2);
-	  }
-  
-	  // Draw background and other images (buttons and title)
-	  image(this.backgroundImg, 0, 0);
-	  image(this.startGameImg, 50, (windowHeight / 2) - 100);
-	  image(this.optionsImg, 50, (windowHeight / 2));
-	  image(this.exitImg, 50, (windowHeight / 2) + 100);
-	  image(this.titleImg, (windowWidth / 2) - 300, 100);
-  
-	  // If options are open, draw the options screen
-	  if (this.optionsOpen) {
-		this.drawOptionsScreen();
-	  }
-  
-	  // Display the help text in the main menu
-	  fill("white");
-	  textSize(40);
-	  text("Name should be 3 characters or more. \nControls: W: forward, A: Left, S: Back, D: Right \nStop at the purple stops to pick up and drop off passengers. \nThis game is too hard, maybe give up before breaking anything", 100, 0.8 * windowHeight);
-  
-	  pop();
-=======
-
 	drawMenu(){
 		clear()
 
@@ -222,7 +182,6 @@ class MainMenuUpdated {
 			}			
 
 		pop()
->>>>>>> b15a230 (Make it look better)
 	}
   
 	// Debug function (show mouse position for debugging)
