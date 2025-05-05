@@ -1,162 +1,198 @@
-let backgroundImage;
-let startButton;
-let optionsButton;
-let exitButton;
-let backButton;
-let nameButton;
-let optionScreen;
-let onButton;
-let on2Button;
-let offButton;
-let off2Button;
-let gameIframe;
-let backgroundMusic;
+class MainMenuUpdated {
+	constructor() {
+	  // Initialize images for various elements in the main menu
+	  this.startGameImg = loadImage("assets/start_game.png");   // Start Game button image
+	  this.optionsImg = loadImage("assets/options.png");        // Options button image
+	  this.exitImg = loadImage("assets/exit.png");              // Exit button image
+	  this.backgroundImg = loadImage("assets/background.png");  // Background image
+	  this.optionsScreenImg = loadImage("assets/pngegg.png");   // Options screen image
+	  this.titleImg = loadImage("assets/Game_Name.png");        // Game title image
+  
+	  // Input field for player's name
+	  this.nameInput = createInput(""); 
+  
+	  // Flag to track whether options are open
+	  this.optionsOpen = false;
+  
+	  // Flag for debugging or other purposes
+	  this.fixStuff = false;
+	}
+  
+	// Method to reload images and reset elements
+	reloadImages(fix = false) {
+	  // Remove all elements on the screen
+	  removeElements();
+	  
+	  // Set the rect mode to CORNER
+	  rectMode(CORNER);
+  
+	  // Reinitialize the name input field
+	  this.nameInput = createInput(""); 
+  
+	  // Reset the options state
+	  this.optionsOpen = false;
+	}
+  
+	// Setup the main menu by setting the canvas and element properties
+	setupMenu() {
+	  // Create a canvas that fills the entire window
+	  createCanvas(windowWidth, windowHeight);
+  
+	  // Set up the name input field
+	  this.nameInput.attribute("placeholder", "Enter Name");  // Placeholder text
+	  this.nameInput.size(200);  // Input width
+	  this.nameInput.position(50, (windowHeight / 2) - 150);  // Position on screen
+  
+	  // Log window size for debugging
+	  console.log(windowWidth, windowHeight);
+  
+	  // Resize images to appropriate dimensions
+	  this.backgroundImg.resize(windowWidth, windowHeight);   // Resize background to fit the window
+	  this.startGameImg.resize(120, 50);                       // Resize Start Game button
+	  this.optionsImg.resize(75, 50);                          // Resize Options button
+	  this.exitImg.resize(75, 50);                             // Resize Exit button
+	  this.optionsScreenImg.resize(windowWidth - 270, windowHeight * 0.8);  // Resize options screen
+	}
+  
+	// Check which button was clicked (Start Game, Options, Exit)
+	checkButtons() {
+	  console.log('checking buttons');
+  
+	  let baseHeight = windowHeight / 2;
 
+	  if (this.optionsOpen){
+	  	let click = this.checkOptions()
+	  	if (!click){
+	  		this.optionsOpen = false
+	  	}
+	  }
+  
+	  // Check if the Start Game button was clicked
+	  if ((mouseY > baseHeight - 100) && (mouseY < baseHeight - 50) && (mouseX > 50) && (mouseX < 170)) {
+		console.log('Start button pressed');
+		this.startGame();  // Call the start game function
+	  }
+  
+	  // Check if the Options button was clicked
+	  if ((mouseY > baseHeight) && (mouseY < baseHeight + 50) && (mouseX > 50) && (mouseX < 125)) {
+		console.log('Options button pressed');
+		this.optionsOpen = !this.optionsOpen;  // Toggle options visibility
+	  }
+  
+	  // Check if the Exit button was clicked
+	  if ((mouseY > baseHeight + 100) && (mouseY < baseHeight + 150) && (mouseX > 50) && (mouseX < 125)) {
+		console.log('Exit button pressed');
+		exitGame();  // Call exit game function
+	  }
+  
+	  // If options are open, check options
+	  // if (this.optionsOpen) {
+	// 	this.checkOptions();
+	  // }
+	}
+  
+	// Check if the music On/Off buttons are clicked
+	checkOptions(){
 
-// Preload assets
-function preload() {
-    backgroundImage = createImg('assets/background.png');
-    startButton = createImg('assets/start_game.png');
-    optionsButton = createImg('assets/options.png');
-    exitButton = createImg('assets/exit.png');
-    backButton = createImg('assets/back png.png');
-    nameButton = createImg('assets/Game_Name.png');
-    optionScreen = createImg('assets/pngegg.png');
-    onButton = createImg('assets/on.png');
-    on2Button = createImg('assets/on.png');
-    offButton = createImg('assets/OFF.png');
-    off2Button = createImg('assets/OFF.png');
-    backgroundMusic = loadSound('assets/background_music.mp3');
-}
+		if ((mouseX > (windowWidth/2) + 15) && (mouseX < (windowWidth/2) + 125) && (mouseY > (windowHeight/2) - 44) && (mouseY < (windowHeight/2) + 6)){
+			musicOn = true
+			return true
+		}
 
-function setup() {
-    createCanvas(windowWidth, windowHeight);
-    
-    backgroundMusic.loop();
-    backgroundMusic.setVolume(1);
+		if ((mouseX > (windowWidth/2) + 105) && (mouseX < (windowWidth/2) + 200) && (mouseY > (windowHeight/2) - 44) && (mouseY < (windowHeight/2) + 6)){
+			musicOn = false
+			return true
+		}
 
-    // Set up background
-    backgroundImage.position(0, 0);
-    backgroundImage.size(windowWidth, windowHeight);
-    const centerX = windowWidth / 3;
-    // Position title and main menu buttons
-    nameButton.position(centerX, 75);
-    startButton.position(100, 300).size(180, 80).mousePressed(startGame);
-    optionsButton.position(100, 400).size(180, 80).mousePressed(showOptions);
-    exitButton.position(100, 500).size(180, 80).mousePressed(exitGame);
+		return false
 
-    // Hide option screen and back button initially
-    optionScreen.position(centerX*0.73, windowHeight*0.2).size(windowWidth/2, windowHeight*0.6).hide();
-    backButton.size(180, 80).hide();
-}
+	}
+  
+	// Start the game if the name input is valid
+	startGame() {
+	  // Check if the name is longer than 2 characters
+	  if (this.nameInput.value().length > 2) {
+		state = 1;  // Set state to 1 (start game)
+		nameValue = this.nameInput.value();  // Store the player's name
+	  }
+	}
+  
+	// Draw the options screen (music toggle)
+	drawOptionsScreen() {
+	  push();
+  
+	  // Draw the background rectangle for options screen
+	  // fill("black");
+	  // rect(300, windowHeight / 10, windowWidth - 350, windowHeight * 0.8);
+	  filter(BLUR)
+  
+	  // Set the font size for the text
+	  textSize(44);
+  
+	  // Draw the "Music: " label
+	  fill("white");
+	  text("Music: ", (windowWidth / 2) - 125, (windowHeight / 2));
+  
+	  // Draw the "On" and "Off" options with transparency if not selected
+	  if (!musicOn) {
+		fill(255, 255, 255, 127);
+	  }
+	  text("On", (windowWidth / 2) + 25, (windowHeight / 2));
+  
+	  fill(255, 255, 255);
+	  text("/", (windowWidth / 2) + 100, (windowHeight / 2));
+  
+	  if (musicOn) {
+		fill(255, 255, 255, 127);
+	  }
+	  text("Off", (windowWidth / 2) + 125, (windowHeight / 2));
+  
+	  pop();
+	}
+  
+	// Draw the main menu
+	drawMenu(){
+		clear()
 
-function draw() {
-    background(220);
-}
+		if (this.optionsOpen){
+			this.nameInput.hide()
+		}
+		else{
+			this.nameInput.show()
+		}
 
-// Function to handle back button display with custom action
-function showBackButton(returnFunction) {
-    backButton.position(windowWidth / 2 - 90, windowHeight - 100);
-    backButton.mousePressed(returnFunction);
-    backButton.show();
-}
+		push()
+			imageMode(CORNER)
+			if (this.fixStuff){
+				translate(-(windowWidth/2), -windowHeight/2)
+			}
+			image(this.backgroundImg, 0, 0)
+			image(this.startGameImg, 50, (windowHeight/2) - 100)
+			image(this.optionsImg, 50, (windowHeight/2))
+			image(this.exitImg, 50, (windowHeight/2) + 100)
+			image(this.titleImg, (windowWidth/2)-300, 100)
 
-// Function to start the game and display Unity game iframe
-function startGame() {
-    // Hide main menu buttons
-    nameButton.hide();
-    startButton.hide();
-    optionsButton.hide();
-    exitButton.hide();
+			fill("white")
+			textSize(40)
+			text("Name should be 3 characters or more. \nControls: W: forward, A: Left, S: Back, D: Right \nStop at the purple stops to pick up and drop off pasengers. \nThis game is too hard, maybe give up before breaking anything", 100, 0.8*windowHeight)
+			// this.debug()
 
-    // Show back button to return to main menu
-    showBackButton(returnToMenu);
+			if (this.optionsOpen){
+				this.drawOptionsScreen()
+			}			
 
-    // Create and display the iframe for Unity game
-    gameIframe = createElement('iframe');
-    gameIframe.position(0, 0);
-    gameIframe.size(windowWidth, windowHeight - 150); // Adjust height to leave space for back button
-    gameIframe.attribute('src', 'unity_game_Levi/index.html');
-    gameIframe.attribute('frameborder', '0');
-}
-
-function showOptions() {
-    // Hide main menu buttons
-    nameButton.hide();
-    startButton.hide();
-    exitButton.hide();
-
-    // Show option screen and back button
-    optionScreen.show();
-    onButton.position(windowWidth * 0.445, windowHeight * 0.36).size(90, 45).show().mousePressed(() => {
-        if (!backgroundMusic.isPlaying()) {
-            backgroundMusic.loop(); // Restart the music if it's stopped
-        }
-        backgroundMusic.setVolume(0.5); // Set volume to 50%
-    });
-
-    // OFF Button: Mutes the music by setting volume to 0
-    offButton.position(windowWidth * 0.505, windowHeight * 0.36).size(90, 45).show().mousePressed(() => {
-        backgroundMusic.setVolume(0); // Set volume to 0 (mute)
-    });
-    
-    on2Button.position(windowWidth*0.52, windowHeight*0.59).size(90, 45).show();
-    off2Button.position(windowWidth*0.58, windowHeight*0.59).size(90, 45).show();
-    showBackButton(hideOptions);
-}
-
-// Options menu styling
-function OptionsMenu() {
-    fill(255);
-    textSize(32);
-    textAlign(CENTER, CENTER);
-    text("Options Menu", width / 2, 120);
-
-    textSize(24);
-    text("Sound FX: ON/OFF", width / 2, 200);
-    text("Display Timer: ON/OFF", width / 2, 260);
-}
-
-// Hide the options menu and return to the main menu
-function hideOptions() {
-    optionScreen.hide();
-    backButton.hide();
-    onButton.hide();
-    on2Button.hide();
-    offButton.hide();
-    off2Button.hide();
-
-    // Show main menu buttons again
-    startButton.show();
-    nameButton.show();
-    optionsButton.position(100, 400);
-    exitButton.show();
-}
-
-// Return to the main menu from the game screen
-function returnToMenu() {
-    if (gameIframe) {
-        gameIframe.remove(); // Remove the game iframe
-    }
-    backButton.hide();
-
-    // Show main menu buttons again
-    startButton.show();
-    nameButton.show();
-    optionsButton.show();
-    exitButton.show();
-}
-function musicVolume() {
-    if (backgroundMusic.isPlaying()) {
-        backgroundMusic.setVolume(0);
-    } else {
-        backgroundMusic.setVolume(0.5);
-    }
-}
-
-// Exit the game with confirmation
-function exitGame() {
-    if (confirm("Are you sure you want to exit the game?")) {
-        window.close();
-    }
-}
+		pop()
+	}
+  
+	// Debug function (show mouse position for debugging)
+	debug() {
+	  push();
+  
+	  fill("white");
+	  textSize(32);
+	  text("Position: " + mouseX + ", " + mouseY, 50, 50);
+  
+	  pop();
+	}
+  }
+  
